@@ -1,0 +1,555 @@
+﻿@model PagedList.IPagedList<AutoMax.Models.DataModel.VehicleViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Inventory";
+    Layout = "~/Views/Shared/_LayoutGrid.cshtml";
+    int oddEven = 1;
+}
+<link href="~/assets/plugins/Switchery.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<h3 class="main-header">Vehicle Inventory</h3>
+<div class="panel panel-default main-panel">
+    <div class="panel-body">
+        <form action="@Url.Content("~/Inventory/Index")" method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.DropDownList("VehicleTypeID", null, "Select Type", new { @class = "form-control custom-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.DropDownList("VehicleTitleID", null, "Select Title", new { @class = "form-control custom-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control custom-control" placeholder="Enter VIN last 6 Digit" id="VIN" name="VIN" maxlength="6" min="6" value="@ViewBag.VIN">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.DropDownList("MakerID", null, "Select Maker", new { @class = "form-control custom-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" id="ModelGrp">
+                        @Html.DropDownList("AutoModelID", null, "Select Model", new { @class = "form-control custom-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" id="SubModelGrp">
+                        @Html.DropDownList("SubModelID", null, "Select Model", new { @class = "form-control custom-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group" style=" margin: 0 auto;">
+                        <input type="submit" value="Search" class="btn btn-block btn-submit btn-custom" />
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div class="row" style="display:none;margin:0 auto;margin-top:5px;width:90%;margin-bottom:0" id="DeleteSuccess">
+    <p class="col-md-4 alert alert-success">Selected vehicle has been successfully deleted</p>
+</div>
+<div class="panel panel-default main-panel" style="margin-top:36px;">
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>VIN</th>
+                    <th>Plate Number</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>SubModel</th>
+                    <th>Title</th>
+                    <th>Odometer</th>
+                    <th>Price</th>
+                    <th>Haraj</th>
+                    <th>OpenSouq</th>
+                    <th>Featured</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wizard in Model)
+                {
+                    <tr id="@wizard.VehicleID" class="details-control Inventory_@wizard.VehicleID" style="cursor: pointer" data-opned="0">
+                        <td class="details-control"><i class="orange-color fa fa-caret-right" style="color: orangered"></i></td>
+                        <td>@wizard.VIN</td>
+                        <td>@wizard.PlateNumber</td>
+                        <td>@wizard.Maker</td>
+                        <td>@wizard.AutoModelName</td>
+                        <td>@wizard.SubModelName</td>
+                        <td>@wizard.VehicleTitle</td>
+                        <td>@wizard.Odometer</td>
+                        <td>
+                            @if (wizard.VehiclePrice != null)
+                            {
+                                <text>
+                                    @String.Format("{0:C}", wizard.VehiclePrice.Value)
+                                </text>
+                            }
+                            else
+                            {
+                                <text>-</text>
+                            }
+                        </td>
+                        <td>
+                            @if (wizard.PublishedOnHaraj != null)
+                            {
+                                if (wizard.PublishedOnHaraj.Value == 0)
+                                {
+                                    <text>NO</text>
+                                }
+                                else
+                                {
+                                    <text>YES</text>
+                                }
+
+                            }
+                            else
+                            {
+                                <text>NO</text>
+                            }
+                        </td>
+                        <td>
+                            @if (wizard.PublishedOnOpenSouq != null)
+                            {
+                                if (wizard.PublishedOnOpenSouq.Value == 0)
+                                {
+                                    <text>NO</text>
+                                }
+                                else
+                                {
+                                    <text>YES</text>
+                                }
+                            }
+                            else
+                            {
+                                <text>NO</text>
+                            }
+                        </td>
+                        <td>
+                            <label class="switch">
+                                @if (wizard.IsFeatured != null)
+                                {
+                                    if (wizard.IsFeatured.Value == true)
+                                    {
+                                        <input type="checkbox" class="FeaturedPrd" checked="checked" id="@wizard.VehicleID">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="FeaturedPrd" id="@wizard.VehicleID">
+                                    }
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="FeaturedPrd" id="@wizard.VehicleID">
+                                }
+                                <div class="slider round"></div>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr style="display:none; cursor:pointer" class="Inventory_@wizard.VehicleID" id="DetailsTR_@wizard.VehicleID">
+                        <td colspan="13">
+                            <div class="row">
+                                <div colspan="col-md-12 col-lg-12">
+                                    <div class="pull-right">
+                                        <a class="td-link" href="@Url.Content("~/VIR?id="+ wizard.VehicleID)" title="VIR"><img class="tooltip-bottom" style="height: 30px; width: 30px;" src="~/assets/images/SVG/vir.svg"></a>
+                                        <a class="td-link" href="@Url.Content("~/VIR?id="+ wizard.VehicleID +"&type=info")" title="Edit Vehicle Info"><img class="tooltip-bottom" style="height: 30px; width: 30px;" src="~/assets/images/SVG/edit.svg"></a>
+                                        <a class="td-link" href="@Url.Content("~/VIR?id=" + wizard.VehicleID + "&type=gallery")" title="Gallery"><img class="tooltip-bottom" style="height: 30px; width: 30px;" src="~/assets/images/SVG/gallery.svg"></a>
+                                        <a class="td-link" href="#" onclick="deleteInventory(@wizard.VehicleID)" title="Delete Product"><img class="tooltip-bottom" style="height: 30px; width: 30px;" src="~/assets/images/SVG/delete.svg"></a>
+                                        <div class="dropdown" style="display: inline-block">
+                                            <button class="btn btn-custom dropdown-toggle" type="button" data-toggle="dropdown">Publish<span class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="#" data-toggle="modal" data-target="#publish_opensouq"
+                                                       onclick="setPublishVehicleOpensooq(@wizard.VehicleID, @(String.Format("\"{0}{1} {2} Ref {3}\""
+                                                        , wizard.VehicleTitle == "NEW" ? "New " : ""
+                                                        , wizard.Maker
+                                                        , wizard.AutoModelName
+                                                        , wizard.VehicleID)
+                                                        ),@(wizard.VehiclePrice == null ? "\"\"" : String.Format("\"{0:C}\"", wizard.VehiclePrice.Value)));">Open Souq</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-toggle="modal" data-target="#publish_haraj"
+                                                       onclick="setPublishVehicleHaraj(@wizard.VehicleID, @(String.Format("\"{0}{1} {2} Ref {3}\""
+                                                        , wizard.VehicleTitle == "NEW" ? "New " : ""
+                                                        , wizard.Maker
+                                                        , wizard.AutoModelName
+                                                        , wizard.VehicleID)
+                                                        ),@(wizard.VehiclePrice == null ? "\"\"" : String.Format("\"{0:C}\"", wizard.VehiclePrice.Value)));">Haraj</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table style="width: 100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="td-img col-md-2 col-lg-2" rowspan="4">
+                                            @{
+                    var fileExists = File.Exists(Server.MapPath("~/VehicleAttachments/" + wizard.ImageName));
+                                            }
+                                            @if (string.IsNullOrEmpty(wizard.ImageName) && !fileExists)
+                                            {
+                                                <img class="img-responsive" src="http://blog.caranddriver.com/wp-content/uploads/2014/03/2015-Nissan-GT-R-NISMO-placement-626x382.jpg">
+                                            }
+                                            else if (fileExists)
+                                            {
+                                                <img class="img-responsive" src="@Url.Content("~/VehicleAttachments/"+ wizard.ImageName)">
+                                            }
+                                            else
+                                            {
+                                                <img class="img-responsive" src="http://blog.caranddriver.com/wp-content/uploads/2014/03/2015-Nissan-GT-R-NISMO-placement-626x382.jpg">
+                                            }
+                                        </td>
+                                        <td colspan="5" class="col-md-6 col-lg-6"><span class="td-main-data">@wizard.Maker</span><br><span class="td-main-header">@wizard.AutoModelName</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-2 col-lg-2">
+                                            <span class="td-header">Status:</span><br><span class="td-data">
+                                                @(wizard.InventoryStatus)
+                                            </span>
+                                        </td>
+                                        <td class="col-md-2 col-lg-2"><span class="td-header">Odometer:</span><br><span class="td-data">@wizard.Odometer</span></td>
+                                        <td class="col-md-2 col-lg-2"><span class="td-header">Upload Date</span><br><span class="td-data">@wizard.UpdateDate</span></td>
+                                        <td class="col-md-2 col-lg-2"><span class="td-header">Stock #:</span><br><span class="td-data">@wizard.StockNumber</span></td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr>
+                                        <td class="col-md-2 col-lg-2"><span class="td-header">Viewed:</span><br><span class="td-data">N/A</span></td>
+                                        <td class="col-md-2 col-lg-2">
+                                            <span class="td-header">Current Price:</span><br><span class="td-data">
+                                                @if (wizard.VehiclePrice != null)
+                                                {
+                                                    <text>@String.Format("{0:C}", wizard.VehiclePrice.Value)</text>
+                                                }
+                                                else
+                                                {
+                                                    <text>-</text>
+                                                }
+                                            </span>
+                                        </td>
+                                        <td class="col-md-2 col-lg-2"><span class="td-header">VIN #:</span><br><span class="td-data">@wizard.VIN</span></td>
+                                        <td class="col-md-2 col-lg-2"><span class="td-header">Owner:</span><br><span class="td-data">@wizard.OwnerName</span></td>
+                                        <td class="col-md-2 col-lg-2"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                                                oddEven++;
+                }
+            </tbody>
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+    <div id="publish_opensouq" class="modal fade" role="dialog">
+        <form action="@Url.Content("~/Inventory/PostToOpensooq/")" method="post">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to opensouq.com</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="TitleOpensooq">Title</label>
+                            <input type="text" class="form-control" id="TitleOpensooq" name="TitleOpensooq" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="DescriptionOpensooq" name="DescriptionOpensooq"></textarea>
+                            <input type="hidden" id="PublishVehicleIdOpensooq" name="PublishVehicleIdOpensooq" value="">
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label id="PublishPriceLabelOpensooq"><input type="checkbox" id="PublishPriceOpensooq" name="PublishPriceOpensooq" value="true">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="NegotiableOpensooq" name="NegotiableOpensooq" value="true">Negotiable</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="publish_haraj" class="modal fade" role="dialog">
+        <form action="@Url.Content("~/Inventory/PostToHaraj/")" method="post">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to haraj.com.sa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="TitleHaraj">Title</label>
+                            <input type="text" class="form-control" id="TitleHaraj" name="TitleHaraj" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="DescriptionHaraj" name="DescriptionHaraj"></textarea>
+                            <input type="hidden" id="PublishVehicleIdHaraj" name="PublishVehicleIdHaraj" value="">
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label id="PublishPriceLabelHaraj"><input type="checkbox" id="PublishPriceHaraj" name="PublishPriceHaraj" value="true">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="NegotiableHaraj" name="NegotiableHaraj" value="true">Negotiable</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="publish_web" class="modal fade" role="dialog">
+        <form action="" method="">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to Website</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title_web">Title</label>
+                            <input type="text" class="form-control" id="title_web">
+                        </div>
+                        <div class="form-group">
+                            <label for="desc_web">Description</label>
+                            <textarea class="form-control cke" id="desc_web"></textarea>
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Negotiable</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="publish_facebook" class="modal fade" role="dialog">
+        <form action="" method="">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to Facebook</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title_facebook">Title</label>
+                            <input type="text" class="form-control" id="title_facebook">
+                        </div>
+                        <div class="form-group">
+                            <label for="desc_facebook">Description</label>
+                            <textarea class="form-control cke" id="desc_facebook"></textarea>
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Negotiable</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="https://use.fontawesome.com/5df3e9a121.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assests/plugins/datatables/datatables.min.js"></script>
+    <script type="text/javascript">
+        $body = $("body");
+        $(document).ajaxStart(function () {
+            alert(111);
+        });
+        $(document).on({
+            ajaxStart: function () {
+                alert(111);
+                $body.addClass("loading");
+            },
+            ajaxStop: function () {
+                alert(111);
+                $body.removeClass("loading");
+            }
+        });
+    </script>
+    <script type="text/javascript">
+
+        function IsNullOrEmpty(val) {
+            return val == null || val == '' || val == undefined ? true : false;
+        }
+    </script>
+    <script type="text/javascript">
+        $('.table tbody').on('click', 'tr.details-control', function () {
+            var tr = $(this).closest('tr');
+            var rowId = tr[0].id;
+            var nextRow = $('tr#DetailsTR_' + rowId)[0];
+            //var row = table.row(tr);
+            if ($("i", this).hasClass('fa fa-caret-right')) {
+                $('tr#DetailsTR_' + rowId).show();
+                $("i", this).removeClass('fa fa-caret-right');
+                $("i", this).addClass('fa fa-caret-down');
+            } else {
+                $('tr#DetailsTR_' + rowId).hide();
+                $("i", this).removeClass('fa fa-caret-down');
+                $("i", this).addClass('fa fa-caret-right');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        function setPublishVehicleOpensooq(publishVehicleId, publishTitle, publishPrice) {
+            $("#PublishVehicleIdOpensooq").val(publishVehicleId);
+            $("#TitleOpensooq").val(publishTitle);
+            if (publishPrice != "") {
+                $("#PublishPriceLabelOpensooq").html('<input type="checkbox" id="PublishPriceOpensooq" name="PublishPriceOpensooq" value="true">Publish Price (' + publishPrice + ')');
+            }
+            return;
+        }
+        function setPublishVehicleHaraj(publishVehicleId, publishTitle, publishPrice) {
+            $("#PublishVehicleIdHaraj").val(publishVehicleId);
+            $("#TitleHaraj").val(publishTitle);
+            if (publishPrice != "") {
+                $("#PublishPriceLabelHaraj").html('<input type="checkbox" id="PublishPriceHaraj" name="PublishPriceHaraj" value="true">Publish Price (' + publishPrice + ')');
+            }
+            return;
+        }
+    </script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        function getInventoryList() {
+            var vehicleTitle = $('#VehicleTitleID option:selected').val();
+            var makerId = $('#MakerID option: selected').val();
+            var autoModelId = $('#AutoModelID option:selected').val();
+            var stockNo = $('#StockNumber').val();
+        }
+    </script>
+    <script type="text/javascript">
+        $('#AutoModelID').change(function () {
+            var modelId = $(this).val();
+            if (!IsNullOrEmpty(modelId)) {
+                $("body").addClass('loading');
+                $.ajax({
+                    url: '@Url.Content("~/Inventory/GetSubModelInventory")',
+                    data: { AutoModelID: modelId },
+                    type: 'POST',
+                }).success(function (data) {
+                    if (data != null) {
+                        $('#SubModelGrp').html(data);
+                        $("body").removeClass('loading');
+                    }
+                }).error(function (Xhr, status, error) {
+                    //
+                }).onStart(function () {
+                    alert(1);
+                });
+            }
+        });
+        $('#MakerID').change(function () {
+            var makerId = $(this).val();
+            if (!IsNullOrEmpty(makerId)) {
+                $("body").addClass('loading');
+                $.ajax({
+                    url: '@Url.Content("~/Inventory/GetModelInventory")',
+                    data: { MakerID: makerId },
+                    type: 'POST',
+                }).success(function (data) {
+                    if (data != null) {
+                        $('#ModelGrp').html(data);
+                        $("body").removeClass('loading');
+                    }
+                }).error(function (Xhr, status, error) {
+                    //
+                });
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        function deleteInventory(vehicleId) {
+            if (vehicleId) {
+                var confrDelete = window.confirm("Are you sure you want to delete vehile?");
+                if (confrDelete) {
+                    $.ajax({
+                        url: '@Url.Content("~/Inventory/DeleteInventory")',
+                        data: { VehicleID: vehicleId },
+                        type: 'POST'
+                    }).success(function (data) {
+                        if (data.InventoryDeleted == true) {
+                            $('tr.Inventory_' + vehicleId).remove();
+                            $('tr.Inventory_' + vehicleId).hide();
+                            $('#DeleteSuccess').show().delay(3000).fadeOut('slow');
+                        }
+                    }).error(function (xHR, status, error) {
+                        ///
+                    });
+                }
+            }
+        }
+        function searchOnVin() {
+            var value = $('#VIN').val();
+            if (!value) {
+                return false;
+            } else {
+                $('form').submit();
+                return true;
+            }
+        }
+        $(".FeaturedPrd").change(function () {
+            var vehicleId = this.id;
+            var isChecked = this.checked;
+            $.ajax({
+                url: '@Url.Action("MakeFeaturedVehilce","Inventory")',
+                data: { VehicleID: vehicleId, IsFeatured: isChecked },
+                type: 'POST'
+            }).success(function (data) {
+                if (data.Featured == true) {
+                    //Updated
+                }
+            }).error(function (xHR, status, error) {
+            });
+        });
+    </script>
+
+}

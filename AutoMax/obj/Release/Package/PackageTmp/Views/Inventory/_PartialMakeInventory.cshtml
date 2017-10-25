@@ -1,0 +1,55 @@
+﻿@Html.DropDownList("AutoModelID", null, "Select Model", new { @class = "form-control custom-control" })
+<script type="text/javascript">
+    $('#AutoModelID').change(function () {
+        var modelId = $(this).val();
+        if (!IsNullOrEmpty(modelId)) {
+            $.ajax({
+                url: '@Url.Content("~/Inventory/GetSubModelInventory")',
+                data: { AutoModelID: modelId },
+                type: 'POST',
+                success: function (data) {
+                    debugger;
+                    if (data != null) {
+                        $('#SubModelGrp').html(data);
+                        $("div#divLoading").removeClass('show');
+                    }
+                    //}).success(function (data) {
+                    //    if (data != null) {
+                    //        $('#SubModelGrp').html(data);
+                    //    }
+                    //}).error(function (Xhr, status, error) {
+                    //    //
+                    //});
+                }
+            })
+        }
+    });
+            $('#MakerID').change(function () {
+                debugger;
+                var makerId = $(this).val();
+                if (makerId != undefined && makerId != '' && makerId != null) {
+                    $("div#divLoading").addClass('show');
+                    $.ajax({
+                        url: '@Url.Content("~/Inventory/GetModelInventory")',
+                        data: { MakerID: makerId },
+                        type: 'POST',
+                        success: function (data) {
+                            debugger;
+                            if (data != null) {
+                                $('#SubModelGrp').html(data);
+                                $("div#divLoading").removeClass('show');
+                            }
+                            //}).success(function (data) {
+                            //    debugger;
+                            //    if (data != null) {
+                            //        $('#ModelGrp').html(data);
+                            //        $("div#divLoading").removeClass('show');
+                            //    }
+                            //}).error(function (Xhr, status, error) {
+                            //    $("div#divLoading").removeClass('show');
+                            //});
+                        }
+                    })
+                }
+            });
+</script>

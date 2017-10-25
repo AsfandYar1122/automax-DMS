@@ -1,0 +1,14 @@
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\AutoMax.Models.dll.config
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\AutoMax.Models.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\AutoMax.Models.pdb
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\obj\Release\AutoMax.Models.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\obj\Release\AutoMax.Models.pdb
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.ConnectionInfo.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.Smo.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.SmoExtended.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.SqlEnum.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.Dmf.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.ServiceBrokerEnum.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Release\Microsoft.SqlServer.RegSvrEnum.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Models\obj\Release\AutoMax.Models.csprojResolveAssemblyReference.cache

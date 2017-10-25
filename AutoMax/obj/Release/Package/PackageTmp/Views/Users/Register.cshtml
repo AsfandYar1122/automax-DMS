@@ -1,0 +1,99 @@
+﻿@model AutoMax.Models.Entities.User
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+<style type="text/css">
+    .custom-control {
+        border: 0.5px solid #C2C2C2 !important;
+    }
+
+    .requiredField {
+        color: red;
+    }
+</style>
+<div class="row">
+    <div class="col-md-3 col-lg-3">
+        <div class="v-center-parent" style="height: 100vh; width: 100%;">
+            <div class="v-center-child" style="width: 100%;">
+                <form action="@Url.Content("~/Users/Register")" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="text-center">
+                        <a href="@Url.Content("~/Home/Login")"> <img class="img-responsive m-auto-center" src="~/assets/images/logo.png"></a>
+                        <h2 class="header-primary m-top-30 m-bottom-30">SIGN UP</h2>
+                    </div>
+                    @Html.ValidationSummary(false, "", new { @class = "requiredField" })
+                    @if (ViewBag.SuccessMessage != "" && ViewBag.SuccessMessage != null)
+                    {
+                        <div class="form-group custom-group" style="padding:0 24px;">
+                            User has been created successfully! You may <a href="@Url.Content("~/Home/Login")">Login</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <p id="userExist" style="display:none; text-align:center"></p>
+                        <div class="form-group custom-group" style="padding:0 24px;">
+                            <label for="username">Email <span class="requiredField">*</span></label>
+                            <input type="email" class="form-control custom-control" id="Email" name="Email" placeholder="Enter Email" style="background-color: #f9fafb; border: none; box-shadow: none;" value="@Model.Email" required>
+                        </div>
+                        <div class="form-group custom-group" style="padding:0 24px;">
+                            <label for="username">First Name <span class="requiredField">*</span></label>
+                            <input type="text" class="form-control custom-control" id="FirstName" name="FirstName" placeholder="Enter First Name" value="@Model.FirstName" style="background-color: #f9fafb; border: none; box-shadow: none;" required>
+                        </div>
+                        <div class="form-group custom-group" style="padding:0 24px;">
+                            <label for="username">Last Name <span class="requiredField">*</span></label>
+                            <input type="text" class="form-control custom-control" id="LastName" name="LastName" placeholder="Enter Last Name" value="@Model.LastName" style="background-color: #f9fafb; border: none; box-shadow: none;" required>
+                        </div>
+                        <div class="form-group custom-group" style="margin-top: 24px; padding: 0 24px;">
+                            <label for="password">Password <span class="requiredField">*</span></label>
+                            <input type="password" class="form-control custom-control" id="password" name="Password" placeholder="Enter Password" value="@Model.Password" style="background-color: #f9fafb; border: none; box-shadow: none;" required>
+                        </div>
+                        <div class="form-group custom-group" style="margin-top: 24px; padding: 0 24px;">
+                            <label for="password">Confirm Password <span class="requiredField">*</span></label>
+                            <input type="password" class="form-control custom-control" id="password" name="Password" placeholder="Enter Confirm Password" value="@Model.Password" style="background-color: #f9fafb; border: none; box-shadow: none;" required>
+                        </div>
+                        <div style="padding:0 24px;">
+                            <button type="submit" class="btn btn-block btn-custom" id="SubmitRegister" style="margin-top: 24px;" name="" value="">Submit</button>
+                            <br />
+                            <a href="@Url.Content("~/Home/Login")">Already have account?</a> &nbsp;&nbsp;
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 col-lg-9 hidden-xs hidden-sm" style="height: 100vh; overflow: hidden; padding-right: 0;">
+        <img src="~/assets/images/login-bg-2.png" class="img-responsive pull-right" style="width: 100%;">
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="~/assets/plugins/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $('#Email').blur(function (event) {
+            var value = $(this).val();
+            if (value) {
+                $.ajax(
+                    {
+                        url: '@Url.Action("UserExists", "Users")',
+                        data: { Email: value },
+                        type: 'POST'
+                    }
+                    ).success(function (data) {
+                        if (data.UserAvailable == true) {
+                            $('#userExist').css('color', 'red');
+                            $('#userExist').text('User already exists!');
+                            $('#userExist').show().fadeOut(3000);
+                            $('#Email').val('');
+                        } else {
+                            $('#userExist').css('color', 'green');
+                            $('#userExist').text('Congrats! User available');
+                            $('#userExist').show().fadeOut(3000);
+                        }
+                    }).error(function (xHR, status, error) {
+
+                    });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,182 @@
+
+
+body {
+  background-color: $body-background-color;
+}
+
+.left-margin {
+  margin-left: $left_margin;
+}
+
+.main-panel {
+  margin: 0px 60px 0px 60px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.05);
+}
+
+.main-header {
+
+  font-family: "Open Sans";
+  margin: 20px 0px 30px 60px;
+  font-weight: 500;
+  color: $theme-secondary-color !important;
+  text-transform: uppercase;
+}
+
+.header-primary {
+  font-family: "Open Sans";
+  color: $theme-tertiary-color !important;
+}
+
+.header-secondary {
+  font-family: "Open Sans";
+  font-size: 1.4em;
+  color: $theme-secondary-color !important;
+}
+
+.header-tertiary {
+  font-family: "Open Sans";
+}
+
+// Theme Font Colors
+.primary-color {
+  color: $theme-primary-color !important;
+}
+
+.secondary-color {
+  color: $theme-secondary-color !important;
+}
+
+.tertiary-color {
+  color: $theme-tertiary-color !important;
+}
+
+.quaternary-color {
+  color: $theme-quaternary-color !important;
+}
+
+.quinary-color {
+  color: $theme-quinary-color !important;
+}
+
+// Theme Font Hover Colors
+.primary-color-hover:hover {
+  color: $theme-primary-color !important;
+}
+
+.secondary-color-hover:hover {
+  color: $theme-secondary-color !important;
+}
+
+.tertiary-color-hover:hover {
+  color: $theme-tertiary-color !important;
+}
+
+.quaternary-color-hover:hover {
+  color: $theme-quaternary-color !important;
+}
+
+.quinary-color-hover:hover {
+  color: $theme-quinary-color !important;
+}
+
+// Theme Background Colors
+.primary-bg {
+  background-color: $theme-primary-color !important;
+}
+
+.secondary-bg {
+  background-color: $theme-secondary-color !important;
+}
+
+.tertiary-bg {
+  background-color: $theme-tertiary-color !important;
+}
+
+.quaternary-bg {
+  background-color: $theme-quaternary-color !important;
+}
+
+.quinary-bg {
+  background-color: $theme-quinary-color !important;
+}
+
+// Theme Background Hover Colors
+.primary-bg:hover {
+  background-color: $theme-primary-color !important;
+}
+
+.secondary-bg:hover {
+  background-color: $theme-secondary-color !important;
+}
+
+.tertiary-bg:hover {
+  background-color: $theme-tertiary-color !important;
+}
+
+.quaternary-bg:hover {
+  background-color: $theme-quaternary-color !important;
+}
+
+.quinary-bg:hover {
+  background-color: $theme-quinary-color !important;
+}
+
+// Additional Font Colors
+.add-color-01 {
+  color: $theme-additional-color-01 !important;
+}
+
+.add-color-02 {
+  color: $theme-additional-color-02 !important;
+}
+
+// Additional Font Hover Colors
+.add-color-hover-01:hover {
+  color: $theme-additional-color-01 !important;
+}
+
+.add-color-hover-02:hover {
+  color: $theme-additional-color-02 !important;
+}
+
+// Additional Background Color
+.add-bg-01 {
+  background-color: $theme-additional-color-01 !important;
+}
+
+.add-bg-02 {
+  background-color: $theme-additional-color-02 !important;
+}
+
+.add-bg-03 {
+  background-color: $theme-additional-color-03 !important;
+}
+
+.add-bg-04 {
+  background-color: $theme-additional-color-04 !important;
+}
+
+.add-bg-05 {
+  background-color: $theme-additional-color-05 !important;
+}
+
+.add-bg-06 {
+  background-color: $theme-additional-color-06 !important;
+}
+
+.add-bg-07 {
+  background-color: $theme-additional-color-07 !important;
+}
+
+.add-bg-08 {
+  background-color: $theme-additional-color-08 !important;
+}
+
+// Additional Background Hover Color
+.add-bg-hover-01:hover {
+  color: $theme-additional-color-01 !important;
+}
+
+.add-bg-hover-02:hover {
+  color: $theme-additional-color-02 !important;
+}

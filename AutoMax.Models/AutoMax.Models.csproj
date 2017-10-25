@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2C5F866D-3761-4289-A31A-B94E02C5731B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoMax.Models</RootNamespace>
+    <AssemblyName>AutoMax.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoMaxContext.cs" />
+    <Compile Include="Common\DBBackupRepository.cs" />
+    <Compile Include="Common\SharedStorage.cs" />
+    <Compile Include="Entities\AutoAirBag.cs" />
+    <Compile Include="Entities\AutoBodyStyle.cs" />
+    <Compile Include="Entities\AutoCondition.cs" />
+    <Compile Include="Entities\AutoDoor.cs" />
+    <Compile Include="Entities\AutoEngine.cs" />
+    <Compile Include="Entities\AutoExteriorColor.cs" />
+    <Compile Include="Entities\AutoInteriorColor.cs" />
+    <Compile Include="Entities\AutoModelMapping.cs" />
+    <Compile Include="Entities\AutoSteering.cs" />
+    <Compile Include="Entities\AutoTransmission.cs" />
+    <Compile Include="Entities\AutoTransmissionMapping.cs" />
+    <Compile Include="Entities\DriveType.cs" />
+    <Compile Include="Entities\EngineCapacity.cs" />
+    <Compile Include="Entities\EntityVersion.cs" />
+    <Compile Include="Entities\FTPRepository.cs" />
+    <Compile Include="Entities\FuelType.cs" />
+    <Compile Include="Entities\AutoGlobalization.cs" />
+    <Compile Include="Entities\InventoryStatus.cs" />
+    <Compile Include="Entities\key.cs" />
+    <Compile Include="Entities\Language.cs" />
+    <Compile Include="Entities\MakerMapping.cs" />
+    <Compile Include="Entities\Maker.cs" />
+    <Compile Include="Entities\AutoModel.cs" />
+    <Compile Include="Entities\MediaPlayer.cs" />
+    <Compile Include="Entities\Milage.cs" />
+    <Compile Include="Entities\MotorizedType.cs" />
+    <Compile Include="Entities\PostingConfiguration.cs" />
+    <Compile Include="Entities\PostingDetail.cs" />
+    <Compile Include="Entities\PostingField.cs" />
+    <Compile Include="Entities\PostingSiteUser.cs" />
+    <Compile Include="Entities\PostingStatus.cs" />
+    <Compile Include="Entities\PostingSite.cs" />
+    <Compile Include="Entities\RoofType.cs" />
+    <Compile Include="Entities\SubModelMapping.cs" />
+    <Compile Include="Entities\Upholstery.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserRole.cs" />
+    <Compile Include="Entities\VehclieTitle.cs" />
+    <Compile Include="Entities\VehicleImage.cs" />
+    <Compile Include="Entities\VehiclePrice.cs" />
+    <Compile Include="Entities\VehicleTemplate.cs" />
+    <Compile Include="Entities\SubModel.cs" />
+    <Compile Include="Entities\VehicleTitleMapping.cs" />
+    <Compile Include="Entities\VehicleType.cs" />
+    <Compile Include="Entities\VehicleWizard.cs" />
+    <Compile Include="Entities\VIRModel.cs" />
+    <Compile Include="Entities\Year.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="bin\Release\AutoMax.Models.dll.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\AutoMax.Models.dll" />
+    <Content Include="bin\Debug\AutoMax.Models.pdb" />
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+    <Content Include="bin\Release\AutoMax.Models.dll" />
+    <Content Include="bin\Release\AutoMax.Models.pdb" />
+    <Content Include="bin\Release\EntityFramework.dll" />
+    <Content Include="bin\Release\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\Release\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\Release\EntityFramework.xml" />
+    <Content Include="bin\Release\log4net.dll" />
+    <Content Include="bin\Release\log4net.xml" />
+    <Content Include="bin\Release\PagedList.dll" />
+    <Content Include="bin\Release\PagedList.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

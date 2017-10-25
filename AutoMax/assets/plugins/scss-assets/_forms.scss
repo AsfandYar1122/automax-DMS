@@ -1,0 +1,68 @@
+.btn-custom {
+  @include button-variant($custom-btn-color, $custom-btn-bg, $custom-btn-border);
+}
+
+.btn-custom-01 {
+  @include button-variant($custom-btn-01-color, $custom-btn-01-bg, $custom-btn-01-border);
+}
+
+.btn-custom-02 {
+  @include button-variant($custom-btn-02-color, $custom-btn-02-bg, $custom-btn-02-border);
+}
+
+.btn-custom-03 {
+  @include button-variant($custom-btn-03-color, $custom-btn-03-bg, $custom-btn-03-border);
+}
+
+.custom-panel-padding, .rootwizard {
+  padding: 15px 90px 15px 90px;
+}
+
+.drop-upload {
+  height: 450px;
+  background-color: $theme-additional-color-03;
+  border: 2px solid #e9edef;
+  margin: 24px 0px 24px 0px
+}
+
+.custom-group, .input-group-label, .checkbox.custom-checkbox {
+  padding-left: 12px;
+  padding-right: 12px;
+
+  > label {
+    font-family: nova;
+  }
+
+  .form-control::-moz-placeholder {
+    font-family: nova;
+  }
+  .form-control:-ms-input-placeholder {
+    font-family: nova;
+  }
+  .form-control::-webkit-input-placeholder {
+    font-family: nova;
+  }
+}
+
+.checkbox.custom-checkbox {
+  padding-top: 10px;
+}
+
+.custom-control {
+  background-color: $theme-additional-color-02;
+  border: none;
+  box-shadow: none;
+  font-family: montserrat;
+  border: 0.5px solid #C2C2C2;
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
+}
+
+.form-navi-wizard {
+  margin: 0 auto;
+}

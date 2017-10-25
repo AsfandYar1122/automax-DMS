@@ -1,0 +1,59 @@
+﻿<label for="model">Model: <span class="requiredField">*</span></label>
+@Html.DropDownList("AutoModelID", null, "Select Model", new { @class = "form-control custom-control", required = true })
+<script type="text/javascript">
+    $('#AutoModelID').change(function () {
+        var modelId = $(this).val();
+        if (modelId != undefined && modelId != '' && modelId != null) {
+            $("div#divLoading").addClass('show');
+            $.ajax({
+                url: '@Url.Content("~/Inventory/GetSubModelWizard")',
+                data: { AutoModelID: modelId },
+                type: 'POST',
+            }).success(function (data) {
+                if (data != null) {
+                    $('#SubModelGrp').html(data);
+                    $("div#divLoading").removeClass('show');
+                }
+            }).error(function (Xhr, status, error) {
+                $("div#divLoading").removeClass('show');
+            });
+        }
+    });
+    $('#MakerID').change(function () {
+        debugger;
+        var makerId = $(this).val();
+        if (makerId != undefined && makerId != '' && makerId != null) {
+            $("div#divLoading").addClass('show');
+            $.ajax({
+                url: '@Url.Content("~/Inventory/GetModelWizard")',
+                data: { MakerID: makerId },
+                type: 'POST',
+            }).success(function (data) {
+                if (data != null) {
+                    $('#ModelGrp').html(data);
+                    $("div#divLoading").removeClass('show');
+                }
+            }).error(function (Xhr, status, error) {
+                $("div#divLoading").removeClass('show');
+            });
+        }
+    });
+    $('#VehicleTypeID').change(function () {
+        var vehicleTypeID = $(this).val();
+        if (vehicleTypeID != undefined && vehicleTypeID != '' && vehicleTypeID != null) {
+            $("div#divLoading").addClass('show');
+            $.ajax({
+                url: '@Url.Content("~/Inventory/GetMakeWizard")',
+                data: { VehicleTypeID: vehicleTypeID },
+                type: 'POST',
+            }).success(function (data) {
+                if (data != null) {
+                    $('#MakeGrp').html(data);
+                    $("div#divLoading").removeClass('show');
+                }
+            }).error(function (Xhr, status, error) {
+                $("div#divLoading").removeClass('show');
+            });
+        }
+    });
+</script>

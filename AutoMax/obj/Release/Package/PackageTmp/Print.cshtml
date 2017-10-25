@@ -1,0 +1,121 @@
+﻿@model AutoMax.Models.DataModel.VehicleViewModel
+@{
+    Layout = null;
+    var url = "http://dms.automax.online/";
+    var webSite = ViewBag.Url;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@Model.Maker</title>
+    <script type="text/javascript" src="~/assets/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="~/assets/scripts/qrcode.js"></script>
+</head>
+<body >
+    <table style="width: 100%; margin-top: 30px;">
+        <tr>
+            <td style="text-align: center;" colspan="4">
+                <img style="height: 100%; width: auto;" src="http://dms.automax.online/assets/images/LogoAutotmax.png">
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="4">
+                <h3 style="border-bottom: 2px solid #f06f20; margin-bottom: 1px; padding-bottom: 10px;">@Html.Raw(@Model.Maker+" "+@Model.AutoModelName+" "+@Model.SubModelName)</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="4">
+                <div style="border-top: 2px solid #f06f20; margin: 10px 0 0 0; padding-top: 10px;"></div>
+                @if (!string.IsNullOrEmpty(Model.ImageName))
+                {
+ 
+                 url = url + "VehicleAttachments/" + Model.ImageName;
+                <img style='height: 150px; width: auto;' src='@url' />
+
+
+               
+                }
+
+                else if (!string.IsNullOrEmpty(Model.ImageName2))
+                {
+
+                url = url + "VehicleAttachments/" + Model.ImageName2;
+               <img style='height: 150px; width: auto;' src='@url' />
+
+
+               
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7; background-color: rgba(157, 157, 157, 0.3);">Stock #</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); background-color: rgba(157, 157, 157, 0.3);">@(!string.IsNullOrEmpty(@Model.StockNumber) ? @Model.StockNumber : "N/A")</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7; background-color: rgba(157, 157, 157, 0.3);">Vehicle Type</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); background-color: rgba(157, 157, 157, 0.3);">@(!string.IsNullOrEmpty(@Model.BodyStyle) ? @Model.BodyStyle:"N/A")</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7;">Overall Grade</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); ">@(Model.TotalRatting != null ? string.Format("{0:0.00}", Model.TotalRatting) : "4.0")</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7;">Odometer</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); ">@(!string.IsNullOrEmpty(@Model.Odometer) ? @Model.Odometer : "N/A")</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7; background-color: rgba(157, 157, 157, 0.3);">Color N</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); background-color: rgba(157, 157, 157, 0.3);">@(!string.IsNullOrEmpty(@Model.ExteriorColor) ? @Model.ExteriorColor : "N/A")</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7; background-color: rgba(157, 157, 157, 0.3);">Transmission</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); background-color: rgba(157, 157, 157, 0.3);">@(!string.IsNullOrEmpty(@Model.AutoTransmission) ? @Model.AutoTransmission : "N/A")</td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7;">Engine</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); ">@(!string.IsNullOrEmpty(@Model.EngineName) ? @Model.EngineName : "N/A")</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.7;">Fuel Type</td>
+            <td style="width: 25%; text-align: center; font-size: 16px; font-weight: 800; line-height: 1.7; color: rgba(42, 42, 42, 0.8); ">@(!string.IsNullOrEmpty(@Model.FuelType) ? @Model.FuelType : "N/A")</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align: center;" colspan="2">
+                <h3 style="margin: 5px 0 10px 0; font-size: 18px;">Taqeem Rating</h3>
+                <h1 style="color: #f06f20; margin: 10px 0 0 10px; font-size: 70px;">@(Model.TotalRatting != null ? string.Format("{0:0.00}", Model.TotalRatting) : "4.0")</h1>
+            </td>
+            <td style="text-align: center;float:right;" colspan="2" id="qrcode">
+                
+                @*<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>*@
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="4">
+                <h5 style="border-top: 2px solid #f06f20; margin: 10px 0 0 0; padding-top: 10px;">FOR ADDITION DETAILS VISIT <a href="www.automax.online" target="_blank">www.automax.online</a></h5>
+                <p style="border-bottom: 2px solid #f06f20; margin-bottom: 10px; padding-bottom: 10px;">(or scan the qr code)</p>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+     var qrcode = new QRCode(document.getElementById("qrcode"), {
+	width : 100,
+	height : 100
+});
+
+     function makeCode() {
+         debugger;
+         
+    var elText ='@webSite@Model.VehicleID';
+         qrcode.makeCode(elText);
+         window.print();
+}
+
+makeCode();
+
+$("#text").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+    </script>
+</body>
+</html>

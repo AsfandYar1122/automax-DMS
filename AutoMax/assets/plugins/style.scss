@@ -1,0 +1,71 @@
+@import "scss-assets/variables";
+@import "bootstrap/css/bootstrap/mixins";
+@import "scss-assets/components";
+@import "scss-assets/left-nav";
+@import "scss-assets/custom-pills";
+@import "scss-assets/utilities";
+@import "scss-assets/forms";
+@import "scss-assets/small-box";
+@import "scss-assets/field-box";
+
+@font-face {
+  font-family: montserrat;
+  src: url('../fonts/montserrat/Montserrat-Regular.otf');
+}
+
+@font-face {
+  font-family: nova;
+  src: url('../fonts/proxima_nova/Mark%20Simonson%20-%20Proxima%20Nova%20Semibold.otf');
+}
+
+.v-center-parent {
+  position: relative;
+}
+
+.v-center-child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.view-height-250 {
+  position: relative;
+  min-height: calc(100vh - 250px);
+}
+
+.box-bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.gallery-margin {
+  margin-bottom: 12px;
+}
+
+.td-img {
+  width: 20%;
+  padding: 10px 10px;
+}
+
+.td-main-header {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.td-header {
+  color: $theme-tertiary-color;
+}
+
+.td-link {
+  color: $theme-primary-color;
+  padding: 0px 15px;
+  font-weight: bold;
+}
+
+.border-top-none {
+  border-top: none;
+}
+

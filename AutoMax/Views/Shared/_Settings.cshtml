@@ -1,0 +1,105 @@
+﻿@using AutoMax.Common.Enums;
+@{
+    var userName = ComonMethods.GetUserName(User.Identity.Name);
+    var userRole = User.Identity.Name.GetUserRole();
+    bool isAdmin = userRole == UserRolesConst.ADMIN || userRole == UserRolesConst.SUPER_ADMIN;
+    bool isMarketing = userRole == UserRolesConst.Marketing;
+    bool isDOP = userRole == UserRolesConst.DataOP;
+}
+
+<div class="settingModel">
+ @if(!isDOP)
+    { 
+    <div class="row">
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/PublishSettings/PublishItem")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/icons/upload.svg">
+                <br />
+                <label>Exchange / Publish</label>
+            </a>
+        </div>
+        @if (!isMarketing)
+        {
+            <div class="col-md-4 col-lg-4">
+                <a href="@Url.Content("~/Users/Index")" class="btn btn-block btn-custom btn-sm">
+                    <img class="left-img" src="~/assets/images/icons/users.svg">
+                    <br />
+                    <label>Manage User</label>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <a href="@Url.Content("~/UserRoles/Index")" class="btn btn-block btn-custom btn-sm">
+                    <img class="left-img" src="~/assets/images/icons/settings.svg">
+                    <br />
+                    <label>Manage Role</label>
+                </a>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/VehicleTypes/Index")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/icons/sports-car.svg">
+                <br />
+                <label>Manage Vehicle Type</label>
+            </a>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/Makers/Index")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/icons/steering-wheel.svg">
+                <br />
+                <label>Manage Make</label>
+            </a>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/AutoModels/Index")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/icons/pistons-cross.svg">
+                <br />
+                <label>Manage Model</label>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/SubModels/Index")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/icons/repair-mechanism.svg">
+                <br />
+                <label>Manage Sub Model</label>
+            </a>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/VehicleInteriorColor/Index")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/icons/safety-seat.svg">
+                <br />
+                <label>Manage Interior Color</label>
+            </a>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/VehicleExteriorColor/Index")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/icons/car-door.svg">
+                <br />
+                <label>Manage Exterior Color</label>
+            </a>
+        </div>
+    </div>
+    }
+    <div class="row">
+        @if(!isDOP)
+        {
+        <div class="col-md-4 col-lg-4">
+            <a href="@Url.Content("~/AutoEngine/Index")" class="btn btn-block btn-custom btn-sm">
+                <img class="left-img" src="~/assets/images/SVG/settings.svg">
+                <br />
+                <label>Manage Engine</label>
+            </a>
+        </div>
+        }
+            <div class="col-md-4 col-lg-4">
+                <a href="@Url.Content("~/UploadVehicleInfo/Index")" class="btn btn-block btn-custom btn-sm">
+                    <img class="left-img" src="~/assets/images/icons/tools.svg">
+                    <br />
+                    <label>Upload Utility</label>
+                </a>
+            </div>
+    </div>
+</div>

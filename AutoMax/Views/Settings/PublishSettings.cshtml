@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/plugins/style.css">
+    <!--<link rel="stylesheet" type="text/css" href="./assets/plugins/multiselect/css/style.css">-->
+</head>
+<body>
+<nav class="left-nav">
+    <div class="left-nav-header">
+        <a class="left-nav-brand" href="#"><img src="./assets/images/Logo%20Autotmax%20Icon.svg"></a>
+    </div>
+    <ul>
+        <li><a class="text-center active" href="#"><i class="fa fa-home"></i></a></li>
+        <li><a class="text-center" href="#"><i class="fa fa-th-list"></i></a></li>
+        <li><a class="text-center" href="#" data-toggle="modal" data-target="#setting-modal"><i
+                class="fa fa-cog"></i></a></li>
+        <li><a class="text-center" href="#"><i class="fa fa-chevron-circle-down"></i></a></li>
+    </ul>
+</nav>
+<nav class="navbar navbar-inverse left-margin navbar-static-top">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-circle fa-lg"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">User Name</a></li>
+                    <li><a href="#">Change Password</a></li>
+                </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-comment fa-lg"></i></a></li>
+            <li><a href="#"><span class="fa fa-power-off fa-lg"></span></a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid left-margin">
+    <h3 class="main-header">Publish Settings : </h3>
+    <div class="panel panel-default main-panel">
+        <div class="panel-body">
+            <h4 class="m-bottom-20">Select Fields to Publish</h4>
+            <form action="" method="">
+                <div class="row">
+                    <div class="col-md-5 col-lg-5">
+                        <select id="multiselect" class="form-control" size="8" multiple="multiple">
+                            <option value='elem_1'>elem 1</option>
+                            <option value='elem_2'>elem 2</option>
+                            <option value='elem_3'>elem 3</option>
+                            <option value='elem_4'>elem 4</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <button type="button" id="multiselect_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                        <button type="button" id="multiselect_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                        <button type="button" id="multiselect_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                        <button type="button" id="multiselect_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                    </div>
+                    <div class="col-md-5 col-lg-5">
+                        <select name="" id="multiselect_to" class="form-control" size="8" multiple="multiple"></select>
+                        <div class="row m-top-10">
+                            <div class="col-md-6 col-lg-6">
+                                <button type="button" id="multiselect_move_up" class="btn btn-default btn-block"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <button type="button" id="multiselect_move_down" class="btn btn-default btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-4 col-lg-offset-4 col-md-2 col-lg-2 m-top-30">
+                        <button class="btn btn-block btn-custom">Save</button>
+                    </div>
+                    <div class="col-md-2 col-lg-2 m-top-30">
+                        <button class="btn btn-block btn-custom">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./assets/plugins/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="./assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./assets/plugins/multiselect/dist/js/multiselect.min.js"></script>
+<script type="text/javascript" src="./assets/scripts/publish_settings.js"></script>
+</body>
+</html>

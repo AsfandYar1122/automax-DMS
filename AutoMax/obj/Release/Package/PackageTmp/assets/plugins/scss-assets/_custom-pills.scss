@@ -1,0 +1,43 @@
+.custom-pills-wrapper {
+  @include clearfix;
+
+  > .custom-pills {
+    > .custom-pills-list {
+      padding: 0px 15px;
+
+      > .custom-pills-anchor {
+        color: $theme-secondary-color;
+        background-color: transparent;
+        box-shadow: 0 0 1px 3px transparent;
+        border-radius: 25px 25px;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+
+    > .custom-pills-list.active {
+      > .custom-pills-anchor {
+        color: $theme-primary-color;
+        background-color: transparent;
+        box-shadow: 0 0 1px 3px $theme-primary-color;
+        border-radius: 25px 25px;
+      }
+    }
+  }
+}
+
+.rootwizard {
+  > .tab-content > .tab-pane {
+    position: relative;
+    margin-top: 30px;
+    min-height: calc(100vh - 300px);
+
+    > .header-primary {
+      position: absolute;
+      top: -80px;
+    }
+  }
+}
+

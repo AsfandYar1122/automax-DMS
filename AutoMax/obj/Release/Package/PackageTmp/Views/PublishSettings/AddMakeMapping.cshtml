@@ -1,0 +1,124 @@
+﻿@model AutoMax.Models.DataModel.MakeMappingViewModel
+@{
+    ViewBag.Title = "CAR MAKE MAPPING FOR " + Model.CompanyName;
+    ViewBag.SubTitle = "CAR MODEL MAPPING FOR " + Model.CompanyName;
+    Layout = "~/Views/Shared/_LayoutGrid.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <input type="hidden" value="@Model.CompanyName" name="CompanyName" />
+    <input type="hidden" value="@Model.ID" name="ID" />
+
+    <div class="container-fluid">
+        <h3 class="main-header">@ViewBag.Title</h3>
+        <div class="panel panel-default main-panel m-bottom-30">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-5 col-md-5 col-lg-5">
+                        <div class="form-group">
+                            <label>Automax</label>
+                            <input class="form-control custom-control" type="text" name="EntityName" disabled value="@Model.EntityName">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 text-center">
+                        <i class="fa fa-exchange m-top-30" style="color: #f37b2e; font-size: 20px;"></i>
+                    </div>
+                    <div class="col-sm-5 col-md-5 col-lg-5">
+                        <div class="form-group">
+                            <label>@Model.CompanyName</label>
+                            @*<select class="form-control custom-control" name=""></select>*@
+                            <input class="form-control custom-control" type="text"
+                                   name="EntityNameForCompany" value="@Model.EntityNameForCompany">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 class="main-header">@ViewBag.SubTitle</h3>
+        <div class="panel panel-default main-panel">
+            <div class="panel-body append-able">
+                <div class="row m-bottom-30">
+                    <div class="col-sm-5 col-md-5 col-lg-5"><h3 class="text-center">Automax</h3></div>
+                    <div class="col-sm-2 col-md-1 col-lg-1"></div>
+                    <div class="col-sm-5 col-md-5 col-lg-5"><h3 class="text-center">@Model.CompanyName</h3></div>
+                    @*<div class="col-sm-2 col-md-1 col-lg-1"><button class="btn btn-custom m-top-20" type="button" id="add"><i class="fa fa-plus"></i></button></div>*@
+                </div>
+                @{ int counter = 0; }
+                @foreach (var item in Model.MappingIDNames)
+                {
+                    <input type="hidden" value="@item.MappingID" name="MappingIDNames[@counter].MappingID" />
+                    <div class="row">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+
+                                <input class="form-control custom-control" type="text" disabled name="MappingIDNames[@counter].MappingName" value="@item.MappingName">
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-1 col-lg-1 text-center">
+                            <i class="fa fa-exchange" style="color: #f37b2e; font-size: 20px; margin-top:5px;"></i>
+                        </div>
+                        <div class="col-sm-5 col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <input class="form-control custom-control" type="text" name="MappingIDNames[@counter].MappingNameForCompany" value="@item.MappingNameForCompany">
+                            </div>
+                        </div>
+                    </div>
+                    counter++;
+                }
+                @if (counter == 0)
+                {
+                    <div style="background: red;padding: 5px; color: white;">Models are not configured for this Make.</div>
+                }
+            </div>
+
+            <div class="row" style="clear:both;margin-bottom:20px; ">
+                <div class="form-group custom-group">
+                    <div class="col-md-1">
+                        <input type="submit" value="Save" class="btn btn-block btn-submit btn-custom" />
+                    </div>
+                    <div class="col-md-2">
+                        @Html.ActionLink("Back to list", "MakeMapping", new { CompanyName = Model.CompanyName }, new { @class = "btn btn-block backToList " })
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+                        }
+
+@section Scripts{
+    <script type="text/javascript" src="~/assets/plugins/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/DataTables/datatables.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var appendHtml = "<div class='row appended'>" +
+                    "<div class='col-sm-5 col-md-5 col-lg-5'>" +
+                    "<div class='form-group'>" +
+                    "<input class='form-control custom-control' type='text' name=''>" +
+                    "</div>" +
+                    "</div>" +
+                    "<div class='col-sm-2 col-md-1 col-lg-1 text-center'>" +
+                    "<i class='fa fa-exchange' style='color: #f37b2e; font-size: 20px; margin-top:5px;'></i>" +
+                    "</div>" +
+                    "<div class='col-sm-5 col-md-5 col-lg-5'>" +
+                    "<div class='form-group'>" +
+                    "<select class='form-control custom-control' name=''></select>" +
+                    "</div>" +
+                    "</div>" +
+                    "<div class='col-sm-2 col-md-1 col-lg-1 text-center'>" +
+                    "<button class='btn btn-custom remove-btn' type='button'><i class='fa fa-close'></i></button>" +
+                    "</div>" +
+                    "</div>";
+            $('#add').on('click', function () {
+                $('.append-able').append(appendHtml);
+            });
+
+            $('body').on('click', '.remove-btn', function () {
+                $(this).closest('.appended').remove();
+            });
+        });
+    </script>
+}

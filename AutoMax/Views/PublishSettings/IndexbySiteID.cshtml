@@ -1,0 +1,74 @@
+﻿@model IEnumerable<AutoMax.Models.Entities.PostingField>
+
+    @{
+        ViewBag.Title = "Index";
+    }
+
+    <head>
+        <meta charset="UTF-8">
+        <title>PublishSettings</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="~/assets/plugins/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/plugins/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/plugins/style.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/plugins/multiselect/css/style.css">
+    </head>
+    <body>
+        <h3 class="main-header">Publish Settings for @(Model.First().PostingSite.PostingSiteName): </h3>
+        <div class="panel panel-default main-panel">
+            <div class="panel-body">
+                <h4 class="m-bottom-20">Select Fields to Publish</h4>
+                <form action="@Url.Content("~/PublishSettings/Save/" + Model.First().PostingSiteID)" method="post">
+                    <div class="row">
+                        <div class="col-md-5 col-lg-5">
+                            <select id="multiselect" class="form-control" size="8" multiple="multiple">
+                                @foreach (var item in Model)
+                                {
+                                    if (!item.IncludeInPosting)
+                                    {
+                                        <option value='@(item.FieldName)'>@(item.DisplayName)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="button" id="multiselect_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                            <button type="button" id="multiselect_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                            <button type="button" id="multiselect_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                            <button type="button" id="multiselect_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                        </div>
+                        <div class="col-md-5 col-lg-5">
+                            <select name="multiselect_to" id="multiselect_to" class="form-control" size="8" multiple="multiple">
+                                @foreach (var item in Model)
+                                {
+                                    if (item.IncludeInPosting)
+                                    {
+                                        <option value='@(item.FieldName)'>@(item.DisplayName)</option>
+                                    }
+                                }
+                            </select>
+                            <div class="row m-top-10">
+                                <div class="col-md-6 col-lg-6">
+                                    <button type="button" id="multiselect_move_up" class="btn btn-default btn-block"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <button type="button" id="multiselect_move_down" class="btn btn-default btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-4 col-lg-offset-4 col-md-2 col-lg-2 m-top-30">
+                            <button class="btn btn-block btn-custom" type="submit" value="Save" id="Save" name="Save" onclick="selectAll();">Save</button>
+                        </div>
+                        <div class="col-md-2 col-lg-2 m-top-30">
+                            <a class="btn btn-block btn-custom"   href='@Url.Content("~/PublishSettings/PublishItem/")'>Cancel</a>
+                        </div>
+                           
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript" src="~/assets/plugins/jquery-2.2.4.min.js"></script>
+        <script type="text/javascript" src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="~/assets/plugins/multiselect/dist/js/multiselect.min.js"></script>
+        <script type="text/javascript" src="~/assets/scripts/publish_settings.js"></script>
+    </body>

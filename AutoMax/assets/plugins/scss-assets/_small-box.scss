@@ -1,0 +1,41 @@
+.small-box-container {
+  @include clearfix;
+
+  > .small-box {
+    font-family: nova;
+    float: left;
+    height: 150px;
+    width: 18%;
+    border-radius: 5px 5px;
+    color: $theme-quaternary-color;
+    letter-spacing: 2px;
+    margin: 0% 1%;
+    box-sizing: content-box;
+
+    > div {
+      width: 100%;
+
+      > .main {
+        font-size: $font-large;
+      }
+    }
+  }
+}
+
+//.small-box {
+//
+//
+//  > .small-box-container {
+//    position: relative;
+//    top: 50%;
+//    left: 50%;
+//    transform: translate(-50%, -50%);
+//    color: $theme-quaternary-color;
+//    font-weight: bolder;
+//    letter-spacing: 2px;
+//
+//    .main {
+//      font-size: $font_large;
+//    }
+//  }
+//}

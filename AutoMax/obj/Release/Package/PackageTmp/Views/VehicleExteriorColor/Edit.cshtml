@@ -1,0 +1,50 @@
+﻿@model AutoMax.Models.Entities.AutoExteriorColor
+
+@{
+    ViewBag.Title = (Model.AutoExteriorColorID == 0 ? "Create" : "Edit") + " Exterior Color";
+}
+<h3 class="main-header">@ViewBag.Title</h3>
+<div class="panel panel-default main-panel" style="margin-top:36px;">
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model => model.AutoExteriorColorID)
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal" style="width:100%; margin:0 auto">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group custom-group">
+                        <label for="s_num">Color Name</label>
+                        @Html.TextBoxFor(x => x.ExteriorColor, new { @class = "form-control custom-control" })
+                        @Html.ValidationMessageFor(x => x.ExteriorColor)
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group custom-group">
+                        <label for="s_num">Color Name Arabic</label>
+                        @Html.TextBoxFor(x => x.ArabicExteriorColor, new { @class = "form-control custom-control" })
+                        @Html.ValidationMessageFor(x => x.ArabicExteriorColor)
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="clear:both;">
+                <div class="form-group custom-group">
+                    <div class="col-md-1">
+                        <input type="submit" value="Save" class="btn btn-block btn-submit btn-custom" />
+                    </div>
+                    <div class="col-md-2">
+                        @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-block backToList " })
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://use.fontawesome.com/5df3e9a121.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/datatables/datatables.min.js"></script>
+}

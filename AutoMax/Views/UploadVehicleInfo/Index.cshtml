@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h3 class="main-header">Upload Utility</h3>
+<div class="panel panel-default main-panel">
+    <div class="panel-body view-height-250">
+        <br />
+        <form action="@Url.Content("~/UploadVehicleInfo/UploadExcel")" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    @if (ViewBag.Message!=null && ViewBag.Message)
+                    {
+                        <p class="alert alert-success" id="fileSuccess" style="display:block;">ERP data has been successfully uploaded</p>
+                    }
+                    else if (ViewBag.Message != null &&  !ViewBag.Message)
+                    {
+                        <p class="alert alert-danger" id="fileError" style="display:block;">ERP data upload was not successful due to some issues in the provided spreadsheet. Please recheck and try again. Thanks for your patience.</p>
+                    }
+                    else
+                    {
+                        <p class="alert alert-danger" id="fileError" style="display:none;"></p>
+                    }
+                   
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>ERP DB Mapping</b></div>
+                            <div class="panel-body" style="min-height: 50vh;">
+                                <label for="upload_file">Select File</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-upload"></i></span>
+                                    <input type="file" class="form-control" name="UploadedFile" id="upload_file">
+                                </div>
+                                @*<ul class="upload-warning">
+                                    <li>Warning 1</li>
+                                    <li>Warning 2</li>
+                                </ul>*@
+                            </div>
+                            <div class="panel-footer clearfix">
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-custom" type="submit" onclick="JavaScript:return Validator();">Upload</button>
+                                    <button class="btn btn-default" type="reset">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>To use this screen, here's what you need to know</b></div>
+                            <div class="panel-body" style="min-height: 50vh;">
+                                @*<ul class="upload-instruction">
+                                    <li>Warning 1</li>
+                                    <li>Warning 1</li>
+                                    <li>Warning 1</li>
+                                    <li>Warning 1</li>
+                                    <li>Warning 1</li>
+                                </ul>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/assets/plugins/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/assets/plugins/twitter-bootstrap-wizard-master/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/assets/plugins/twitter-bootstrap-wizard-master/prettify.js"></script>
+    <script type="text/javascript">
+        function Validator() {
+            var fileName = $('#upload_file').val();
+            if (fileName) {
+                return true;
+            } else {
+                $('#fileError').html("Please select file.")
+                $('#fileError').fadeIn('fast').delay(5000).fadeOut('fast');
+                return false;
+            }
+        }
+    </script>
+}

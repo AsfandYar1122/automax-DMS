@@ -1,0 +1,172 @@
+﻿@model PagedList.IPagedList<AutoMax.Models.Entities.User>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "User Management";
+    Layout = "~/Views/Shared/_LayoutGrid.cshtml";
+    int counter = 1;
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/css/theme.default.min.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="main-header">User Management</h3>
+    </div>
+</div>
+<div class="clearfix">
+
+</div>
+<div class="panel panel-default main-panel">
+    <div class="panel-body">
+        <form action="@Url.Content("~/Users/Index")" method="post">
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control custom-control" placeholder="Email" id="Email" name="Email" value="@ViewBag.Email">
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control custom-control" placeholder="First Name" id="FirstName" name="FirstName" value="@ViewBag.FirstName">
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control custom-control" placeholder="Last Name" id="LastName" name="LastName" value="@ViewBag.LastName">
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 clarfix">
+                    <a href="@Url.Content("~/Users/Create")" class="btn btn-custom pull-right" style="margin-left: 10px;">Add</a>
+                    <button type="submit" class="btn btn-custom btn-submit pull-right" style="margin-left: 10px;">Search</button>
+                    <!-- <div class="form-group" style=" margin: 0 auto;">
+                        <input type="submit" value="Search" class="btn btn-block btn-submit btn-custom" />
+                    </div> -->
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+@Html.Partial("_Notifications")
+<div class="panel panel-default main-panel" style="margin-top:36px;">
+    <div class="panel-body">
+        <table id="tblsort" class="table tablesorter" style="border-spacing: 10px;border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Role</th>
+                    <th>Created At</th>
+                    <th class="unsortable">Status At</th>
+                    <th class="unsortable">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="User_@item.UserID">
+                        <td>@item.Email</td>
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>
+                            @{
+                                if (item.UserRole != null)
+                                {
+                                    <text> @item.UserRole.Role</text>
+                                }
+                                else
+                                {
+
+                                    <text>-</text>}
+                            }
+                        </td>
+                        <td>@item.CreatedDate.ToString(AutoMax.Utility.Constants.DATE_FORMAT)</td>
+                        <td>
+                            @{
+                                if (item.IsActive)
+                                {
+                                    <span class="label label-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-danger">InActive</span>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Content("~/Users/Edit/"+item.UserID)" title="Edit" style="color:blue;font-size:10px;">
+                                <i class="fa fa-pencil fa-2x"></i>
+                            </a>
+                            <a href="#" onclick="deleteUser(@item.UserID)" title="Delete" style="color:red;font-size:10px;">
+                                <i class="fa fa-trash fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                                    counter++;
+                                }
+            </tbody>
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://use.fontawesome.com/5df3e9a121.js"></script>
+   <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>-->
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="~/assets/plugins/datatables/datatables.min.js"></script>-->
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/jquery.tablesorter.widgets.min.js"></script>
+    <script>
+        $(function () {
+            $("#tblsort").tablesorter(
+                {
+                    textSorter: function (a, b) {
+                        return a.localeCompare(b);
+                    },
+                    headers: {
+                        '.unsortable': { sorter: false },
+                        0: { sorter: "text" },
+                        1: { sorter: "text" },
+                        2: { sorter: "text" },
+                        3: { sorter: "text" }
+                    },
+                    ignoreCase: true
+                    //selectorHeaders: '> thead > tr > th  '
+                    // cssChildRow: 'expand-child'
+                });
+        });
+    </script>
+    <script type="text/javascript">
+        function deleteUser(userId) {
+            if (userId) {
+                var confrDelete = window.confirm("Are you sure to delete this user?");
+                if (confrDelete) {
+                    $.ajax({
+                        url: '@Url.Content("~/Users/DeleteUser")',
+                        data: { UserID: userId },
+                        type: 'POST',
+                        success: function (data) {
+                            if (data.UserDeleted) {
+                                $('tr#User_' + userId).remove();
+                                $('#notificationMessageID').addClass("alert alert-success");
+                                $('#notificationMessageID').html("<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a> " + data.Message);
+                            } else {
+                                $('#notificationMessageID').addClass("alert alert-danger");
+                                $('#notificationMessageID').html("<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a> " + data.Message);
+                                console.log(data.Message);
+                            }
+                            setTimeout(function () { window.location.href = '@Url.Action("Index", "Users")'; }, 3000);
+                        },
+                        error: function (xHR, status, error) {
+                            console.log(error);
+                            alert("Some error occured while deleting record. Please try agian.");
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+}

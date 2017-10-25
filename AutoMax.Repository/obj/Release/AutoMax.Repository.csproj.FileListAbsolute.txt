@@ -1,0 +1,12 @@
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\AutoMax.Repository.dll.config
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\AutoMax.Repository.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\AutoMax.Repository.pdb
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\AutoMax.Models.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\EntityFramework.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\EntityFramework.SqlServer.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\AutoMax.Models.pdb
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\EntityFramework.xml
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Release\EntityFramework.SqlServer.xml
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\obj\Release\AutoMax.Repository.csprojResolveAssemblyReference.cache
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\obj\Release\AutoMax.Repository.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\obj\Release\AutoMax.Repository.pdb

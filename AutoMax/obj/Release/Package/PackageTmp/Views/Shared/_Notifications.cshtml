@@ -1,0 +1,15 @@
+﻿@if (TempData["HasError"] != null && TempData["Message"] != null)
+{
+    <div style="padding: 5px; margin-left: 56px; margin-right: 56px;">
+        <div id="notificationMessageID" class='alert alert-@(bool.Parse(TempData["HasError"].ToString()) ? "danger" : "success")'>
+            <a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>@TempData["Message"]
+        </div>
+    </div>
+}
+else
+{
+    <div style="padding: 5px; margin-left: 56px; margin-right: 56px;">
+        <div id="notificationMessageID">
+        </div>
+    </div>
+}

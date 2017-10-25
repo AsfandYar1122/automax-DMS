@@ -1,0 +1,16 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+<div class="container">
+    <div class="box-404">
+        <div class="v-center-child">
+            <div class="error-header-img"><img class="img-responsive" src="~/assets/images/logo.png"></div>
+            <div class="error-title">WOOPS</div>
+            <div class="error-text">SOME ERROR OCCURED</div>
+            <div class="error-img"><img class="img-responsive" src="~/assets/images/404.png"></div>
+            <button class="btn btn-custom" onclick="window.location.href='@Url.Action("Index","Dashboard")'">GO TO DASHBOARD</button>
+        </div>
+    </div>
+</div>

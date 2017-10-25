@@ -1,0 +1,1191 @@
+﻿@model PagedList.IPagedList<AutoMax.Models.DataModel.VehicleViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Inventory";
+    Layout = "~/Views/Shared/_LayoutGrid.cshtml";
+    int oddEven = 1;
+    var sucessMessage = ViewBag.SuccessMessage;
+    var a = Model;
+    var b = "";
+}
+<style>
+    .sortable {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
+<style type="text/css">
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-image: url('../../assets/images/ajax-loader.gif');
+        /*background: url('images/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);*/
+    }
+
+    #divLoading {
+        display: none;
+    }
+
+        #divLoading.show {
+            display: block;
+            position: fixed;
+            z-index: 100;
+            background-image: url('../../assets/images/ajax-loader.gif');
+            background-color: #666;
+            opacity: 0.7;
+            background-repeat: no-repeat;
+            background-position: center;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            top: 0;
+        }
+
+    #loadinggif.show {
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        z-index: 101;
+        width: 32px;
+        height: 32px;
+        margin-left: -16px;
+        margin-top: -16px;
+    }
+</style>
+<link href="~/assets/plugins/Switchery.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/css/theme.default.min.css" rel="stylesheet" />
+<h3 class="main-header">Vehicle Inventory</h3>
+<div class="row" style="display:none;margin:0 auto;margin-top:5px;width:90%;margin-bottom:0" id="CreationSuccess">
+    <p class="col-md-4 alert alert-success">@sucessMessage</p>
+</div>
+@if (Request["facebook"] == "success")
+{
+    <div class="row" style="margin-left: 73px;">
+        <p class="col-md-4 alert alert-success">Vehicle Shared Sucessfully</p>
+    </div>
+}
+else if (Request["facebook"] == "failure")
+{
+    <div class="row" style="margin-left: 73px;">
+        <p class="col-md-4 alert alert-success">There is some issue.Please try later.</p>
+    </div>
+}
+
+<div class="panel panel-default main-panel">
+
+    <div class="panel-body">
+        <div class="LoadingImage">
+            <form action="@Url.Content("~/Inventory/Index")" id="inventorySearchFrm" method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="text" class="form-control custom-control" placeholder="Enter VIN last 6 Digit" id="VIN" name="VIN" value="@ViewBag.VIN" onkeyup="GetVin(this.value)">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.DropDownList("VehicleTitleID", null, "Select Title", new { @class = "form-control custom-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.DropDownList("VehicleTypeID", null, "Select Type", new { @class = "form-control custom-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.DropDownList("MakerID", null, "Select Maker", new { @class = "form-control custom-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" id="ModelGrp">
+                            @Html.DropDownList("AutoModelID", null, "Select Model", new { @class = "form-control custom-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" id="SubModelGrp">
+                            @Html.DropDownList("SubModelID", null, "Select Sub Model", new { @class = "form-control custom-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="form-group" id="SubModelGrp">
+                            <select id="IsFeatured" name="IsFeatured" class="form-control custom-control">
+                                <option value="-1">Featured Vehicles (Yes/No)</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <script>
+                            debugger;
+                            var id = '@Html.Raw(TempData["IsFeatured"])';
+                            debugger;
+                            if (id != "") {
+
+
+                                var ids = id
+                                debugger;
+                                var select = document.getElementById("IsFeatured");
+                                debugger;
+                                for (var ii = 0; ii < select.length; ii++)
+                                    if (select.options[ii].value == ids) { //Found!
+                                        select.options[ii].selected = true;
+
+                                    }
+                            }
+                        </script>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" id="SubModelGrp">
+                            @Html.DropDownList("InventoryStatusID", null, "Select Status", new { @class = "form-control custom-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" id="SubModelGrp">
+                            <select id="HasDealerImages" name="HasDealerImages" class="form-control custom-control">
+                                <option value="-1">Dealer Images Available (Yes/No)</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <script>
+                        debugger;
+                        var id = '@Html.Raw(TempData["HasDealerImages"])';
+                        if (id != "") {
+
+
+                            var ids = id;
+                            var select = document.getElementById("HasDealerImages");
+                            debugger;
+                            for (var ii = 0; ii < select.length; ii++)
+                                if (select.options[ii].value == ids) { //Found!
+                                    select.options[ii].selected = true;
+
+                                }
+                        }
+
+
+                    </script>
+                </div>
+
+                @*sorting information for grid; DONOT REMOVE THESE FIELDS*@
+                <input type="hidden" name="sortingColumnName" id="sortingColumnName" value="" />
+                <input type="hidden" name="isASC" id="isASC" value="" />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group" style="margin: 0 auto;">
+                            <input type="submit" value="Search" onclick="setupSortingWithDefaults();" class="btn btn-block btn-submit btn-custom" />
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div id="divLoading" class="container-fluid left-margin">
+        </div>
+    </div>
+</div>
+<div class="row" style="display:none;margin:0 auto;margin-top:5px;width:90%;margin-bottom:0" id="DeleteSuccess">
+    <p class="col-md-4 alert alert-success">Selected vehicle has been successfully deleted</p>
+</div>
+<div style="margin-top:36px;margin-right: 57px;">
+    <input type="button" value="Delete All" onclick="deleteAll();" style="width:140px;" class="btn btn-submit btn-custom pull-right" />
+    <a href="" style="margin-right: 13px;" onclick="GetImageURLFromFTP();" class="btn btn-submit btn-custom pull-right">Import from Dealer Made</a>
+    <input type="button" style="margin-right: 13px;width:140px" value="Reset Filter" onclick="location.href='@Url.Action("Index", "Inventory")'" class="btn btn-submit btn-custom pull-right" />
+
+    <a href="" style="color: #ff4500;margin-left:6%;padding: 10px 0;text-decoration: underline;">Vehicle's Count: @ViewBag.CountTotal</a>
+    @*<a style="float:right;margin-right:27px">Vehicle Count:<span class="badge" style="margin-left:15px">@ViewBag.CountTotal</span></a>*@<br>
+
+</div>
+<div class="row" style="margin: 10px 60px;display:none;" id="ftpMessage">
+    <p class="col-md-12 alert alert-success"></p>
+</div>
+<div id="successalert" style="margin-top:15px; width: 90%; position: relative; left: 5%;top:5%;">
+    <div id="successid" class="alert alert-success" style="display:none">
+        <strong></strong> Posting request has been queued for processing
+    </div>
+    <div id="dealersuccessid" class="alert alert-success" style="display:none">
+        <strong></strong> Images have been imported from Dealer Made
+    </div>
+    <div id="dealererrorid" class="alert alert-danger" style="display:none">
+        <strong>Error!</strong> Error occured while importing images from Dealer Made
+    </div>
+    <div id="noimagesid" class="alert alert-danger" style="display:none">
+        <strong></strong> No Images found for importing
+    </div>
+    <div id="errorid" class="alert alert-danger" style="display:none">
+        <strong>Error!</strong> Error occured while posting Vehicle
+    </div>
+</div>
+<div class="panel panel-default main-panel" style="margin-top:36px;">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <input type="hidden" id="SortingOrder" value="@ViewBag.SortingOrder" />
+            <table id="tblsort" class="table table-responsive tablesorter">
+                <thead>
+                    <tr>
+                        <th class="unsortable"><input type="checkbox" id="cbDeleteAll" /></th>
+                        <th class="unsortable"></th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.VIN')">VIN</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.PlateNumber')">Plate Number</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.InventoryStatus')">Status</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.Maker')">Make</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.AutoModelName')">Model</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.SubModelName')">Sub Model</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.VehicleTitle')">Title</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.Odometer')">Odometer</th>
+                        <th class="sortable" onclick="setupSorting(this,'@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.VehiclePrice')">Price</th>
+                        <th>Facebook</th>
+                        <th>OpenSouq</th>
+                        <th>Haraj</th>
+                        <th class="unsortable">Has Dealer Images</th>
+                        <th class="unsortable">Featured</th>
+
+                    </tr>
+                </thead>
+                <tbody id="tblbody">
+                    @foreach (var wizard in Model)
+                    {
+                    <tr id="@wizard.VehicleID" class="details-control Inventory_@wizard.VehicleID" style="cursor: pointer" data-opned="0">
+                        <td> <input class="clsDeleteAll" data-vehicleid="@wizard.VehicleID" type="checkbox" onclick="event.stopPropagation();" /></td>
+                        <td class="details-control"><i class="orange-color fa fa-caret-right" style="color: orangered"></i></td>
+                        <td>@wizard.VIN</td>
+                        <td>@wizard.PlateNumber</td>
+                        <td>@wizard.InventoryStatus</td>
+                        <td>@wizard.Maker</td>
+                        <td>@wizard.AutoModelName</td>
+                        <td>@wizard.SubModelName</td>
+                        <td>@wizard.VehicleTitle</td>
+                        <td>@wizard.Odometer</td>
+                        <td>
+                            @if (wizard.VehiclePrice != null)
+                            {
+                            <text>
+                                SAR @String.Format("{0:n}", wizard.VehiclePrice.Value)
+                            </text>
+                            }
+                            else
+                            {
+                            <text>-</text>
+                            }
+                        </td>
+                        <td>
+                            @if (wizard.IsFacebook != null)
+                            {
+                                if (wizard.IsFacebook.Value == true)
+                                {
+                                <text>YES</text>
+                                }
+                                else
+                                {
+                                <text>NO</text>
+                                }
+                            }
+                            else
+                            {
+                            <text>NO</text>
+                            }
+                        </td>
+                        <td>
+                            @if (wizard.PublishedOnHaraj != null)
+                            {
+                                if (wizard.PublishedOnHaraj.Value == 0)
+                                {
+                                <text>NO</text>
+                                }
+                                else
+                                {
+                                <text>YES</text>
+                                }
+
+                            }
+                            else
+                            {
+                            <text>NO</text>
+                            }
+                        </td>
+
+                        <td>
+                            @if (wizard.PublishedOnOpenSouq != null)
+                            {
+                                if (wizard.PublishedOnOpenSouq.Value == 0)
+                                {
+                                <text>NO</text>
+                                }
+                                else
+                                {
+                                <text>YES</text>
+                                }
+                            }
+                            else
+                            {
+                            <text>NO</text>
+                            }
+                        </td>
+
+                        <td>
+                            <label class="switch">
+                                @if (wizard.HasDealerImages != null)
+                                {
+                                    if (wizard.HasDealerImages.Value == true)
+                                    {
+                                    <input type="checkbox" class="FeaturedPrd" disabled="disabled" checked="checked" id="@wizard.VehicleID">
+                                    }
+                                    else
+                                    {
+                                    <input type="checkbox" class="FeaturedPrd" disabled="disabled" id="@wizard.VehicleID">
+                                    }
+                                }
+                                else
+                                {
+                                <input type="checkbox" class="FeaturedPrd" disabled="disabled" id="@wizard.VehicleID">
+                                }
+                                <div class="slider round"></div>
+                            </label>
+                        </td>
+
+                        <td>
+                            <label class="switch">
+                                @if (wizard.IsFeatured != null)
+                                {
+                                    if (wizard.IsFeatured.Value == true)
+                                    {
+                                    <input type="checkbox" class="FeaturedPrd" checked="checked" id="@wizard.VehicleID">
+                                    }
+                                    else
+                                    {
+                                    <input type="checkbox" class="FeaturedPrd" id="@wizard.VehicleID">
+                                    }
+                                }
+                                else
+                                {
+                                <input type="checkbox" class="FeaturedPrd" id="@wizard.VehicleID">
+                                }
+                                <div class="slider round"></div>
+                            </label>
+                        </td>
+
+
+                    </tr>
+                        <tr style="display:none; cursor:pointer" class="Inventory_@wizard.VehicleID expand-child" id="DetailsTR_@wizard.VehicleID">
+                            <td colspan="13">
+                                <div class="row">
+                                    <div colspan="col-md-12 col-lg-12">
+                                        <div class="pull-right">
+                                            <a class="td-link tooltip-bottom" href="@Url.Content("~/VIR?id="+ wizard.VehicleID)" title="TAQEEM"><img class="" style="height: 30px; width: 30px;" src="~/assets/images/SVG/vir.svg"></a>
+                                            <a class="td-link tooltip-bottom" href="@Url.Content("~/VIR?id="+ wizard.VehicleID +"&type=info")" title="Edit Vehicle Info"><img class="tooltip-bottom" style="height: 30px; width: 30px;" src="~/assets/images/SVG/edit.svg"></a>
+                                            <a class="td-link tooltip-bottom" href="@Url.Content("~/VIR?id=" + wizard.VehicleID + "&type=gallery")" title="Gallery"><img class="tooltip-bottom" style="height: 30px; width: 30px;" src="~/assets/images/SVG/gallery.svg"></a>
+                                            <a class="td-link tooltip-bottom" href="#" onclick="deleteInventory(@wizard.VehicleID)" title="Delete Product"><img class="tooltip-bottom" style="height: 30px; width: 30px;" src="~/assets/images/SVG/delete.svg"></a>
+
+                                            @if (wizard.InventoryStatus == "INVENTORY")
+                                            {
+                                            <div class="dropdown" style="display: inline-block">
+                                                <button class="btn btn-custom dropdown-toggle" type="button" data-toggle="dropdown">Publish<span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        @*<a href="#" id="linkOpensooq" data-toggle="modal" data-target="#publish_opensouq"
+                                                                   onclick="setPublishVehicleOpensooq(@wizard.VehicleID, @(String.Format("\"{0}{1} {2} Ref {3}\""
+                                                            , wizard.VehicleTitle == "NEW" ? "New " : ""
+                                                            , wizard.Maker
+                                                            , wizard.AutoModelName
+                                                            , wizard.VehicleID)
+                                                            ),@(wizard.VehiclePrice == null ? "\"\"" : String.Format("\"SAR {0:n}\"", wizard.VehiclePrice.Value)));">Open Souq</a>*@
+                                                        <a href="#" id="linkOpensooq" data-toggle="modal" data-target="#publish_opensouq"
+                                                           onclick="GetPostingFieldsOpensooq(@wizard.VehicleID, @(wizard.VehiclePrice == null ? "\"\"" : String.Format("\"SAR {0:n}\"", wizard.VehiclePrice.Value)), 'Arabic')">Open Souq</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" id="linkHaraj" data-toggle="modal" data-target="#publish_haraj"
+                                                           onclick="GetPostingFieldsHaraj(@wizard.VehicleID, @(wizard.VehiclePrice == null ? "\"\"" : String.Format("\"SAR {0:n}\"", wizard.VehiclePrice.Value)), 'Arabic')">Haraj</a>
+                                                        @*<a href="#" data-toggle="modal" data-target="#publish_haraj"
+                                                                   onclick="setPublishVehicleHaraj(@wizard.VehicleID, @(String.Format("\"{0}{1} {2} Ref {3}\""
+                                                            , wizard.VehicleTitle == "NEW" ? "New " : ""
+                                                            , wizard.Maker
+                                                            , wizard.AutoModelName
+                                                            , wizard.VehicleID)
+                                                            ),@(wizard.VehiclePrice == null ? "\"\"" : String.Format("\"SAR {0:n}\"", wizard.VehiclePrice.Value)));">Haraj</a>*@
+                                                    </li>
+                                                    <li>
+                                                        <form action="@Url.Content("~/Inventory/FaceBook")" method="get">
+                                                            <input type="hidden" name="id" value="@wizard.VehicleID" />
+                                                            <input type="submit" value="Facebook" style="background-color: transparent;border-color: transparent;margin-left: 15px;" />
+                                                        </form>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table-sorterchild" style="width: 100%">
+                                    <tbody>
+                                        <tr>
+                                            <td class="td-img col-md-2 col-lg-2" rowspan="4" style="width:20%">
+                                                @if (!string.IsNullOrEmpty(wizard.ImageName))
+                                                {
+                                                    if (wizard.ImageName.StartsWith("http://"))
+                                                    {
+                                                    <img class="img-responsive" src="@wizard.ImageName">
+                                                    }
+                                                    else
+                                                    {
+                                                    <img class="img-responsive" src="@Url.Content("~/VehicleAttachments/" + wizard.ImageName)">
+                                                    }
+
+                                                }
+                                                else if (!string.IsNullOrEmpty(wizard.ImageName2))
+                                                {
+                                                    if (wizard.ImageName != null)
+                                                    {
+                                                        if (wizard.ImageName.StartsWith("http://"))
+                                                        {
+                                                        <img class="img-responsive" src="@wizard.ImageName2">
+                                                        }
+                                                        else
+                                                        {
+                                                        <img class="img-responsive" src="@Url.Content("~/VehicleAttachments/" + wizard.ImageName2)">
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                    <img class="img-responsive" src="@Url.Content("~/VehicleAttachments/" + wizard.ImageName2)">
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <img class="img-responsive" src="~/assets/images/automax.jpg">
+                                                }
+                                            </td>
+                                            <td colspan="5" class="col-md-6 col-lg-6"><span class="td-main-data">@wizard.Maker</span><br><span class="td-main-header">@wizard.AutoModelName</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-2 col-lg-2">
+                                                <span class="td-header">Status</span><br><span class="td-data">
+                                                    @(wizard.InventoryStatus)
+                                                </span>
+                                            </td>
+                                            <td class="col-md-2 col-lg-2"><span class="td-header">Odometer</span><br><span class="td-data">@wizard.Odometer</span></td>
+                                            <td class="col-md-2 col-lg-2"><span class="td-header">Upload Date</span><br><span class="td-data">@wizard.UpdateDate</span></td>
+
+                                            <td class="col-md-2 col-lg-2">
+                                                <span class="td-header">Stock #</span><br><span class="td-data">
+                                                    @if (!string.IsNullOrEmpty(wizard.StockNumber))
+                                                    {
+                                                    @wizard.StockNumber
+                                                    }
+                                                    else
+                                                    {
+                                                    @:N/A
+                                                    }
+
+                                                </span>
+                                            </td>
+
+                                            <td class="col-md-3 col-lg-3">
+                                                <span class="td-header">Haraj ID</span><br><span class="td-data">
+                                                    @if (wizard.PublishedOnHaraj.HasValue && wizard.PublishedOnHaraj.Value != 0)
+                                                    {
+                                                    <text>@wizard.HarajID</text>
+                                                    }
+                                                    else
+                                                    {
+                                                    <text>N/A</text>
+                                                    }
+                                                </span>
+                                            </td>
+                                            <td class="col-md-2 col-lg-2"><span class="td-header">Year</span><br><span class="td-data">@wizard.YearName</span></td>
+                                        </tr>
+                                        <tr></tr>
+                                        <tr>
+                                            @*<td class="col-md-2 col-lg-2"><span class="td-header">Viewed:</span><br><span class="td-data">N/A</span></td>*@
+                                            <td class="col-md-2 col-lg-2">
+                                                <span class="td-header">Current Price</span><br><span class="td-data">
+                                                    @if (wizard.VehiclePrice != null)
+                                                    {
+                                                    <text>SAR @String.Format("{0:n}", wizard.VehiclePrice.Value)</text>
+                                                    }
+                                                    else
+                                                    {
+                                                    <text>-</text>
+                                                    }
+                                                </span>
+                                            </td>
+                                            <td class="col-md-2 col-lg-2"><span class="td-header">VIN #</span><br><span class="td-data">@wizard.VIN</span></td>
+                                            <td class="col-md-2 col-lg-2">
+                                                <span class="td-header">Owner</span><br><span class="td-data">
+                                                    @if (!string.IsNullOrEmpty(wizard.OwnerName))
+                                                    {
+                                                    @wizard.OwnerName
+                                                    }
+                                                    else
+                                                    {
+                                                    @:N/A
+                                                                                                                                 }
+
+                                                </span>
+                                            </td>
+                                            <td class="col-md-2 col-lg-2"><span class="td-header">Sub Model</span><br><span class="td-data">@wizard.SubModelName</span></td>
+                                            <td class="col-md-2 col-lg-2">
+                                                <span class="td-header">OpenSouq ID</span><br><span class="td-data">
+                                                    @if (wizard.PublishedOnOpenSouq.HasValue && wizard.PublishedOnOpenSouq.Value != 0)
+                                                    {
+                                                    <text>@wizard.OpenSouqID</text>
+                                                    }
+                                                    else
+                                                    {
+                                                    <text>N/A</text>
+                                                    }
+                                                </span>
+
+                                            </td>
+                                           
+                                            
+                                            <td class="col-md-2 col-lg-2">
+                                                <span class="td-header">TAQEEM Overall Rate</span><br><span class="td-data">
+                                                    @if (wizard.TotalRatting != null)
+                                                    {
+                                                    <text> @String.Format("{0:n}", wizard.TotalRatting.Value)</text>
+                                                    }
+                                                    else
+                                                    {
+                                                    <text>4.0</text>
+}
+                                                </span>
+                                            </td>
+                                           
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        oddEven++;
+                    }
+                </tbody>
+            </table>
+        </div> <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new
+    {
+        page,
+        sortOrder = ViewBag.CurrentSort,
+        currentFilter = ViewBag.CurrentFilter,
+        IsFeatured = TempData["IsFeatured"],
+        VehicleTypeID = ViewBag.VehicleTypeID.SelectedValue,
+        VehicleTitleID = ViewBag.VehicleTitleID.SelectedValue,
+        MakerID = ViewBag.MakerID.SelectedValue
+        ,
+        HasDealerImages = TempData["HasDealerImages"]
+    ,
+        VIN = ViewBag.VIN,
+        SearchAny = ViewBag.SearchAny,
+        AutoModelID = ViewBag.AutoModelID.SelectedValue,
+        SubModelID = ViewBag.SubModelID.SelectedValue,
+        InventoryStatusID = ViewBag.InventoryStatusID.SelectedValue,
+        sortingColumnName = ViewBag.sortingColumnName
+    }))
+
+        @*<div class="col-md-2">
+                <input type="button" value="Delete All" onclick="deleteAll();" class="btn btn-block btn-submit btn-custom" />
+            </div>*@
+
+    </div>
+    <div id="publish_opensouq" class="modal fade" role="dialog">
+        <form action="@Url.Content("~/Inventory/PostToOpensooq/")" method="post">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to opensouq.com</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="TitleOpensooq">Title</label>
+                            <input type="text" class="form-control" id="TitleOpensooq" name="TitleOpensooq" value="" dir="rtl" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="DescriptionOpensooq" name="DescriptionOpensooq" rows="10" dir="rtl" required></textarea>
+                            <input type="hidden" id="PublishVehicleIdOpensooq" name="PublishVehicleIdOpensooq" value="">
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label id="PublishPriceLabelOpensooq"><input type="checkbox" id="PublishPriceOpensooq" name="PublishPriceOpensooq" value="true">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="NegotiableOpensooq" name="NegotiableOpensooq" value="true">Negotiable</label>
+                        </div>
+                        <div>
+                            <label>Publish Status: </label>
+                            <span id="PublishStatusOpensooq"></span>
+                            <a id="PublishErrorLinkOpensooq" style="cursor:pointer;" onclick="ShowPostingError();">(Show Details)</a>
+                            <input type="hidden" id="PublishError">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="publish_haraj" class="modal fade" role="dialog">
+        <form action="@Url.Content("~/Inventory/PostToHaraj/")" method="post">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to haraj.com.sa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="TitleHaraj">Title</label>
+                            <input type="text" class="form-control" id="TitleHaraj" name="TitleHaraj" value="" dir="rtl" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="DescriptionHaraj" name="DescriptionHaraj" rows="10" dir="rtl" required></textarea>
+                            <input type="hidden" id="PublishVehicleIdHaraj" name="PublishVehicleIdHaraj" value="">
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label id="PublishPriceLabelHaraj"><input type="checkbox" id="PublishPriceHaraj" name="PublishPriceHaraj" value="true">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="NegotiableHaraj" name="NegotiableHaraj" value="true">Negotiable</label>
+                        </div>
+                        <div>
+                            <label>Publish Status: </label>
+                            <span id="PublishStatusHaraj"></span>
+                            <a id="PublishErrorLinkHaraj" style="cursor:pointer;" onclick="ShowPostingError();">(Show Details)</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="publish_web" class="modal fade" role="dialog">
+        <form action="" method="">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to Website</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title_web">Title</label>
+                            <input type="text" class="form-control" id="title_web">
+                        </div>
+                        <div class="form-group">
+                            <label for="desc_web">Description</label>
+                            <textarea class="form-control cke" id="desc_web"></textarea>
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Negotiable</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="publish_facebook" class="modal fade" role="dialog">
+        <form action="" method="">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Publish to Facebook</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title_facebook">Title</label>
+                            <input type="text" class="form-control" id="title_facebook">
+                        </div>
+                        <div class="form-group">
+                            <label for="desc_facebook">Description</label>
+                            <textarea class="form-control cke" id="desc_facebook"></textarea>
+                        </div>
+                        <h5>Options</h5>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Publish Price</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox">Negotiable</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Publish</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://use.fontawesome.com/5df3e9a121.js"></script>
+    @* <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>*@
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    @* <script type="text/javascript" src="~/assets/plugins/datatables/datatables.min.js"></script>*@
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/jquery.tablesorter.widgets.min.js"></script>
+    <script>
+        $(function () {
+            //$("#tblsort").tablesorter(
+            //    {
+            //        headers: {
+            //            '.unsortable': {sorter : false},
+            //            2: { sorter: "text" }
+            //        },
+            //        //selectorHeaders: '> thead > tr > th  '
+            //        cssChildRow: 'expand-child',
+            //        textSorter: function (a, b) {
+            //            return a.localeCompare(b);
+            //        }
+            //    });
+        });
+    </script>
+    <script>
+        var id = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["message"]))';
+        if (id != "") {
+
+            if (id == "1") {
+                $("#successid").show();
+                setTimeout(function () {
+                    $("#successid").hide();
+                }, 4000)
+            }
+            else if (id == "0") {
+                $("#errorid").show();
+                setTimeout(function () {
+                    $("#errorid").hide();
+                }, 4000)
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $body = $("body");
+        $(document).ajaxStart(function () {
+            //alert(111);
+        });
+        $(document).on({
+            ajaxStart: function () {
+                //alert(111);
+                $body.addClass("loading");
+            },
+            ajaxStop: function () {
+                //alert(111);
+                $body.removeClass("loading");
+            }
+        });
+    </script>
+    <script type="text/javascript">
+
+        function IsNullOrEmpty(val) {
+            return val == null || val == '' || val == undefined ? true : false;
+        }
+    </script>
+    <script type="text/javascript">
+        $('.table tbody').on('click', 'tr.details-control', function () {
+            var tr = $(this).closest('tr');
+            var rowId = tr[0].id;
+            var nextRow = $('tr#DetailsTR_' + rowId)[0];
+            //var row = table.row(tr);
+            if ($("i", this).hasClass('fa fa-caret-right')) {
+                $('tr#DetailsTR_' + rowId).show();
+                $("i", this).removeClass('fa fa-caret-right');
+                $("i", this).addClass('fa fa-caret-down');
+            } else {
+                $('tr#DetailsTR_' + rowId).hide();
+                $("i", this).removeClass('fa fa-caret-down');
+                $("i", this).addClass('fa fa-caret-right');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        function setPublishVehicleOpensooq(publishVehicleId, publishTitle, publishPrice) {
+            $("#PublishVehicleIdOpensooq").val(publishVehicleId);
+            $("#TitleOpensooq").val(publishTitle);
+            if (publishPrice != "") {
+                $("#PublishPriceLabelOpensooq").html('<input type="checkbox" id="PublishPriceOpensooq" name="PublishPriceOpensooq" value="true">Publish Price (' + publishPrice + ')');
+            }
+            return;
+        }
+        function setPublishVehicleHaraj(publishVehicleId, publishTitle, publishPrice) {
+            $("#PublishVehicleIdHaraj").val(publishVehicleId);
+            $("#TitleHaraj").val(publishTitle);
+            if (publishPrice != "") {
+                $("#PublishPriceLabelHaraj").html('<input type="checkbox" id="PublishPriceHaraj" name="PublishPriceHaraj" value="true">Publish Price (' + publishPrice + ')');
+            }
+            return;
+        }
+    </script>
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+    <script type="text/javascript">
+        function getInventoryList() {
+            var vehicleTitle = $('#VehicleTitleID option:selected').val();
+            var makerId = $('#MakerID option: selected').val();
+            var autoModelId = $('#AutoModelID option:selected').val();
+            var stockNo = $('#StockNumber').val();
+        }
+    </script>
+    <script type="text/javascript">
+        $('#AutoModelID').change(function () {
+            var modelId = $(this).val();
+            debugger;
+            if (!IsNullOrEmpty(modelId)) {
+                debugger;
+                $("div#divLoading").addClass('show');
+                $.ajax({
+                    url: '@Url.Content("~/Inventory/GetSubModelInventory")',
+                    data: { AutoModelID: modelId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data != null) {
+                            $('#SubModelGrp').html(data);
+                            $("div#divLoading").removeClass('show');
+                        }
+                    }
+                })
+            }
+            else {
+                $('#SubModelID').find("option:not(:first)").remove();
+                $("div#divLoading").removeClass('show');
+            }
+
+
+            //}).success(function (data) {
+            //    if (data != null) {
+            //        $('#SubModelGrp').html(data);
+            //        $("body").removeClass('loading');
+            //    }
+            //}).error(function (Xhr, status, error) {
+            //    //
+            //}).onStart(function () {
+            //    alert(1);
+            //});
+            //}
+        });
+        $('#MakerID').change(function () {
+            var makerId = $(this).val();
+            if (!IsNullOrEmpty(makerId)) {
+                debugger;
+                $("div#divLoading").addClass('show');
+                $.ajax({
+                    url: '@Url.Content("~/Inventory/GetModelInventory")',
+                    data: { MakerID: makerId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data != null) {
+                            $('#ModelGrp').html(data);
+                            $("div#divLoading").removeClass('show');
+                        }
+                    }
+                })
+            }
+            else {
+
+                debugger;
+                $('#SubModelID').find("option:not(:first)").remove();
+                $('#AutoModelID').find("option:not(:first)").remove();
+                //.html(data);
+                $("div#divLoading").removeClass('show');
+
+            }
+            //}).success(function (data) {
+            //    if (data != null) {
+            //        $('#ModelGrp').html(data);
+            //        $("body").removeClass('loading');
+            //    }
+            //}).error(function (Xhr, status, error) {
+            //    //
+            //});
+            //}
+        });
+    </script>
+    <script type="text/javascript">
+        function deleteInventory(vehicleId) {
+            if (vehicleId) {
+                var confrDelete = window.confirm("Are you sure you want to delete vehicle?");
+                if (confrDelete) {
+                    $.ajax({
+                        url: '@Url.Content("~/Inventory/DeleteInventory")',
+                        data: { VehicleID: vehicleId },
+                        type: 'POST'
+                    }).success(function (data) {
+                        if (data.InventoryDeleted == true) {
+                            $('tr.Inventory_' + vehicleId).remove();
+                            $('tr.Inventory_' + vehicleId).hide();
+                            $('#DeleteSuccess').show().delay(3000).fadeOut('slow');
+                        }
+                    }).error(function (xHR, status, error) {
+                        ///
+                    });
+                }
+            }
+        }
+        function searchOnVin() {
+            var value = $('#VIN').val();
+            if (!value) {
+                return false;
+            } else {
+                $('form').submit();
+                return true;
+            }
+        }
+        $(".FeaturedPrd").change(function () {
+            var vehicleId = this.id;
+            var isChecked = this.checked;
+            $.ajax({
+                url: '@Url.Action("MakeFeaturedVehilce","Inventory")',
+                data: { VehicleID: vehicleId, IsFeatured: isChecked },
+                type: 'POST'
+            }).success(function (data) {
+                if (data.Featured == true) {
+                    //Updated
+                }
+            }).error(function (xHR, status, error) {
+            });
+        });
+        $(document).ready(
+        function () {
+            var message = '@sucessMessage';
+            if (message) {
+                $('#CreationSuccess').show().fadeOut(3000);
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    @*<script src="//code.jquery.com/jquery-1.10.2.js"></script>*@
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/blockUI.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$(".sortable").each(function(){ $(this).attr("title","Click to Sort"); });
+            $("#VIN").autocomplete({
+                source: function (request, response) {
+                    debugger;
+                    $.ajax({
+                        url: "@Url.Content("~/Inventory/GetVIN")",
+                        type: "POST",
+                        dataType: "json",
+                        data: { Prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.VIN, value: item.VIN };
+                            }))
+
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "",
+                    results: function (count) {
+                        return count + (count > 1 ? ' results' : ' result ') + ' found';
+                    }
+                }
+            });
+
+            $("#cbDeleteAll").change(function () {
+                var selected = (this.checked);
+                $(".clsDeleteAll").prop('checked', selected);
+            });
+
+
+
+        });
+
+        function deleteAll() {
+            if ($(".clsDeleteAll:checked").length > 0) {
+                var vehicleArr = [];
+                $(".clsDeleteAll:checked").each(function () { vehicleArr.push($(this).data('vehicleid')); });
+                if (confirm("Are you sure you want to delete selected vehicle(s)?")) {
+                    $.ajax({
+                        url: '@Url.Content("~/Inventory/DeleteAllInventory")',
+                        type: "POST",
+                        dataType: "json",
+                        traditional: true,
+                        data: { VehicleID: vehicleArr },
+                        success: function (data) {
+                            debugger;
+                            if (!!data.InventoryDeleted) {
+                                console.log('successfully delete.');
+                                $('#DeleteSuccess').show().delay(3000).fadeOut('slow');
+                                setTimeout(function () { window.location.href = '@Url.Action("Index","Inventory")'; }, 3000);
+                            } else {
+                                alert("Some error occured while deleting record. Please try agian.");
+                            }
+                        },
+                        error: function (xHR, status, error) {
+                            console.log('error');
+                        }
+                    });
+                }
+            } else {
+                alert("Please select a vehicle to delete.");
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function GetPostingFieldsOpensooq(publishVehicleId, publishPrice, language) {
+            //alert("started");
+            $("#TitleOpensooq").val("Loading...");
+            $("#DescriptionOpensooq").val("Loading...");
+            $("#PublishVehicleIdOpensooq").val(publishVehicleId);
+            $.getJSON('@Url.Content("~/Inventory/GetPostingFields")'
+                    , { PublishVehicleId: publishVehicleId, PostingWebsite: 'Opensooq', Language: language }
+                    , function (data) {
+                        if (data.Success) {
+                            $("#TitleOpensooq").val(data.Title);
+                            $("#DescriptionOpensooq").val(data.Description);
+                            $("#PublishStatusOpensooq").html(data.PostingStatus);
+                            $("#PublishError").val(data.PostingError);
+
+                            if (publishPrice != "") {
+                                $("#PublishPriceLabelOpensooq").html('<input type="checkbox" id="PublishPriceOpensooq" name="PublishPriceOpensooq" value="true">Publish Price (' + publishPrice + ')');
+                            }
+                        }
+                        else {
+                            alert(data.Error);
+                        }
+                    });
+        }
+        function GetPostingFieldsHaraj(publishVehicleId, publishPrice, language) {
+            //alert("started");
+            $("#TitleHaraj").val("Loading...");
+            $("#DescriptionHaraj").val("Loading...");
+            $("#PublishVehicleIdHaraj").val(publishVehicleId);
+            $.getJSON('@Url.Content("~/Inventory/GetPostingFields")'
+                , { PublishVehicleId: publishVehicleId, PostingWebsite: 'Haraj', Language: language }
+                , function (data) {
+                    if (data.Success) {
+                        $("#TitleHaraj").val(data.Title);
+                        $("#DescriptionHaraj").val(data.Description);
+                        $("#PublishStatusHaraj").html(data.PostingStatus);
+                        $("#PublishError").val(data.PostingError);
+
+                        if (publishPrice != "") {
+                            $("#PublishPriceLabelHaraj").html('<input type="checkbox" id="PublishPriceHaraj" name="PublishPriceHaraj" value="true">Publish Price (' + publishPrice + ')');
+                        }
+                    }
+                    else {
+                        alert(data.Error);
+                    }
+                });
+        }
+        function ShowPostingError() {
+            alert($("#PublishError").val());
+        }
+        function GetImageURLFromFTP() {
+            $.blockUI({ message: '<div class="upload-loader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div><br><p style="color:orange;">Images are in process of import from dealer made and will be imported in few seconds</p>' });
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetImageURLFromFTP", "Vir")',
+                data: {},
+                success: function (returndata) {
+                    if (returndata.Success && returndata.data != null && returndata.data.length > 0 && returndata.data[0] != '""') {
+                        var html = "";
+                        for (var i = 0; i < returndata.data.length; i++) {
+                            $("#ImageList").append('<li class="ui-sortable-handle"><a href="javascript:void(0);" style="float: none;" class="image_link"><img class="img-focusable" src="' + returndata.data[i] + '" alt=""></a><a href="javascript:void(0)"></a></li>');
+
+                        }
+                        $.unblockUI();
+                        window.stop();
+                        $("#dealersuccessid").show();
+                        setTimeout(function () {
+                            $("#dealersuccessid").hide();
+                            location.reload();
+                        }, 4000);
+                        //$("#ftpMessage>p").html("Images Imported Successfully");
+                        //$("#ftpMessage>p").fadeIn('fast').delay(5000).fadeOut('fast');
+                        //$("#ftpMessage").fadeIn('fast').delay(5000).fadeOut('fast');
+                    }
+                    else {
+                        $.unblockUI();
+                        window.stop();
+                        $("#noimagesid").show();
+                        setTimeout(function () {
+                            $("#noimagesid").hide();
+                            location.reload();
+                        }, 4000);
+                    }
+                },
+                failure: function (returndata) {
+                    $.unblockUI();
+                    window.stop();
+                    $("#dealererrorid").show();
+                    setTimeout(function () {
+                        $("#dealererrorid").hide();
+                        location.reload();
+                    }, 4000);
+
+                }
+            });
+
+
+        }
+        function GetVin(val) {
+            if (val.length <= 6) {
+                return val;
+            } else if (val.length > 6) {
+                var v = val.substring(val.length - 6);
+                $("#VIN").val(v);
+
+            }
+        }
+
+        // default values for sorting
+        function setupSortingWithDefaults() {
+            debugger;
+            $("#sortingColumnName").val("@AutoMax.Utility.Constants.INVENTORYSORTINGCOLUMNS.CreatedDate");
+            $("#isASC").val("true");
+        }
+
+        function setupSorting(ctrl, sortingColumn) {
+
+            var sortingOrder = $("#SortingOrder").val();
+            console.log('sortingOrder: ' + sortingOrder);
+            console.log('sortingColumn: ' + sortingColumn);
+
+            // swap sorting order
+            if (sortingOrder === "ASC") {
+                $("#SortingOrder").val("DESC");
+            } else {
+                $("#SortingOrder").val("ASC")
+            }
+
+            $("#sortingColumnName").val(sortingColumn);
+            $("#isASC").val(sortingOrder === "ASC" ? "true" : "false");
+
+            $("#inventorySearchFrm").submit();
+        }
+
+    </script>
+}

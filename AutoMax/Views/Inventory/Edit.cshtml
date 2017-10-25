@@ -1,0 +1,319 @@
+﻿@model AutoMax.Models.Entities.VehicleWizard
+@{
+    ViewBag.Title = "Update Wizard";
+}
+<style>
+    #dropZone {
+        background: gray;
+        border: black dashed 3px;
+        width: 200px;
+        padding: 50px;
+        text-align: center;
+        color: white;
+    }
+</style>
+<link href="~/Content/dropzone.css" rel="stylesheet" />
+<h3 class="main-header">Vehicle Inventory > Upload Wizard</h3>
+
+<form id="UploadWizard" action="@Url.Content("~/Inventory/Wizard")" meth method="post" enctype="multipart/form-data">
+    <input type="hidden" value="1" id="hdnTabCounts" />
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default main-panel">
+        <div class="panel-body">
+            <div class="rootwizard" id="rootwizard">
+                <div class="custom-pills-wrapper">
+                    <ul class="custom-pills pull-right">
+                        <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" data-toggle="tab" href="#tab1">1</a></li>
+                        <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" href="#tab2" data-toggle="tab">2</a></li>
+                        <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" href="#tab3" data-toggle="tab">3</a></li>
+                        <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" href="#tab4" data-toggle="tab">4</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane" id="tab1">
+                        <h3 class="header-primary">INFORMATION</h3>
+                        <div class="row">
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="vin">VIN: *</label>
+                                    <input type="text" class="form-control custom-control" max="17" min="17" maxlength="17" id="vin" name="VIN" required>
+                                    <span class="has-error hide" id="VinVal">VIN Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="p_num">Plate Number:</label>
+                                    <input type="text" class="form-control custom-control" id="p_num" name="PlateNumber" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="s_num">Stock #:</label>
+                                    <input type="text" class="form-control custom-control" id="s_num" name="StockNumber" required>
+                                    <span class="has-error hide" id="STNVal">StockNo Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="make">Make: *</label>
+                                    @Html.DropDownList("MakerID", null, "Select Make", new { @class = "form-control custom-control", required = true })
+                                    <span class="has-error hide" id="MakeVal">Make Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="model">Model: *</label>
+                                    @Html.DropDownList("AutoModelID", null, "Select Model", new { @class = "form-control custom-control", required = true })
+                                    <span class="has-error hide" id="ModelVal">Make Can't be empty!</span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="trim">Sub Model:</label>
+                                    @Html.DropDownList("SubModelID", null, "Select Model", new { @class = "form-control custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="year">Year: *</label>
+                                    @Html.DropDownList("YearID", null, "Select Year", new { @class = "form-control custom-control", required = true })
+                                    <span class="has-error hide" id="YearVal">Year Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="model">Title: *</label>
+                                    @Html.DropDownList("VehicleTitleID", null, "Select Title", new { @class = "form-control custom-control", required = true })
+                                    <span class="has-error hide" id="TitleVal">Title Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="odometer">Odometer: *</label>
+                                    <input type="text" class="form-control custom-control" id="odometer" name="Odometer" required>
+                                    <span class="has-error hide" id="OdometerVal">Odometer Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="condition">Condition: *</label>
+                                    @Html.DropDownList("AutoConditionID", null, "Select Condition", new { @class = "form-control custom-control", required = true })
+                                    <span class="has-error hide" id="ConditionVal">Condition Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="b_style">Body Style: *</label>
+                                    @Html.DropDownList("AutoBodyStyleID", null, "Select Style", new { @class = "form-control  custom-control", required = true })
+                                    <span class="has-error hide" id="BodyStyleVal">Body Style Can't be empty!</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="a_bags">Air Bags (ex. 2, 4, 6, 11)</label>
+                                    @Html.DropDownList("AutoAirBagID", null, "Select Value", new { @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="i_color">Interior Color:</label>
+                                    @Html.DropDownList("AutoInteriorColorID", null, "Select Interior Color", new { @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="door">Doors:</label>
+                                    @Html.DropDownList("AutoDoorsID", null, "Select Doors", new { @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="e_color">Exterior Color:</label>
+                                    @Html.DropDownList("AutoExteriorColorID", null, "Select Exterior Color", new { @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="engine">Engine:</label>
+                                    @Html.DropDownList("AutoEngineID", null, "Select Engine", new { @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="e_cap">Engine Capacity (ex. 2.5cc, 3.5cc)</label>
+                                    @Html.DropDownList("EngineCapacityID", null, "Select Capacity", new { id = "e_cap", @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="d_type">Drive Type:</label>
+                                    @Html.DropDownList("DriveTypeID", null, "Select Drive Type", new { id = "d_type", @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="f_text">Free Text:</label>
+                                    <input type="text" class="form-control custom-control" id="f_text" name="FreeText">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="f_type">Fuel Type:</label>
+                                    @Html.DropDownList("FuelTypeID", null, "Select Fuel Type", new { id = "f_type", @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="transmission">Transmission:</label>
+                                    @Html.DropDownList("AutoTransmissionID", null, "Select Transmission", new { id = "transmission", @class = "form-control  custom-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <h3 class="header-primary">PRICE & WARRANTY</h3>
+                        <div class="row">
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="p_cost">Purchasing Cost:</label>
+                                    <select class="form-control custom-control" id="p_cost" name=""></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group custom-group">
+                                    <label for="s_price">Selling price:</label>
+                                    <input type="text" class="form-control custom-control" id="s_price" placeholder="Select or Create New" name="VehiclePrice">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group custom-group">
+                                    <label for="warranty">Warranty:</label>
+                                    <textarea class="form-control custom-control" id="warranty" name="WarantyText"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <h3 class="header-primary">DESCRIPTION</h3>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group custom-group">
+                                    <textarea class="form-control custom-control" id="desc" name="Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab4">
+                        <h3 class="header-primary">Gallery</h3>
+                        <div class="row">
+                            <div class="col-md-8 col-lg-9">
+                                <div class="gallery-container">
+                                    <div class="row" id="galleryContainerdiv">
+                                        @*<div class="col-md-4 col-lg-3" id="displayImage"><img class="img-responsive img-rounded gallery-image m-bottom-30" src="" id="img1"></div>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-3">
+                                <div class="col-md-12 col-lg-12">
+                                    <label class="btn btn-block btn-custom btn-file">
+                                        Upload File <input type="file" style="display: none;" accept="image/*" id="MultipleFiles" name="MultipleFiles" multiple>
+                                    </label>
+                                </div>
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="drop-upload v-center-parent">
+                                        <div class="dropzone"
+                                             id="my-awesome-dropzone" style="height:100%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-auto-center" style="width: 50%;">
+                    <div class="col-md-4 col-lg-4">
+                        <button type="button" class="btn btn-block btn-previous btn-custom">Previous</button>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <button type="button" class="btn btn-block btn-submit btn-custom" id="btnSubmit" value="">Finish</button>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <button type="button" class="btn btn-block btn-next btn-custom" id="btnNext">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @Scripts.Render("~/bundles/UploadWizard")
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files.length > 0) {
+                for (var i = 0; i < input.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var html = '<div class="col-md-4 col-lg-3" id="displayImage"><img class="img-responsive img-rounded gallery-image m-bottom-30" src=' + e.target.result + ' id="img"></div>';
+                        $('#galleryContainerdiv').append(html);
+                        //$('#img1').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        }
+        function readURLDropZone(input) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var html = '<div class="col-md-4 col-lg-3" id="displayImage"><img class="img-responsive img-rounded gallery-image m-bottom-30" src=' + e.target.result + ' id="img"></div>';
+                $('#galleryContainerdiv').append(html);
+                //$('#img1').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input);
+        }
+        $("#MultipleFiles").change(function () {
+            readURL(this);
+        });
+
+    </script>
+    <script type="text/javascript">
+        $('#btnSubmit').click(function () {
+            var isValid = $("#UploadWizard").valid();
+            if (isValid) {
+                $("#UploadWizard").submit();
+            }
+        });
+    </script>
+    <script src="~/Scripts/dropzone.js"></script>
+    <script type="text/javascript">
+        Dropzone.options.myAwesomeDropzone = {
+            paramName: "file",
+            autoProcessQueue: true,
+            maxFilesize: 10,
+            url: '@Url.Content("~/Inventory/SaveUploadedFile")',
+            previewsContainer: "#galleryContainerdiv",
+            uploadMultiple: true,
+            parallelUploads: 5,
+            createImageThumbnails: false,
+            maxFiles: 20,
+            init: function () {
+                var cd;
+                this.on("success", function (file, response) {
+                   
+                    readURLDropZone(file);
+                    this.removeFile(file);
+                    $('.dz-progress').hide();
+                    $('.dz-size').hide();
+                    $('.dz-error-mark').hide();
+                    console.log(response);
+                    console.log(file);
+                    cd = response;
+                });
+            },
+            onComplete: function () {
+               
+            }
+        };
+    </script>
+}

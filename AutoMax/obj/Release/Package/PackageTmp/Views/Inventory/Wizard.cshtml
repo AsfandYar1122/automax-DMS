@@ -1,0 +1,720 @@
+﻿@model AutoMax.Models.Entities.VehicleWizard
+@{
+    ViewBag.Title = "Upload Wizard";
+}
+<style type="text/css">
+    #dropZone {
+        background: gray;
+        border: black dashed 3px;
+        width: 200px;
+        padding: 50px;
+        text-align: center;
+        color: white;
+    }
+
+    .requiredField {
+        color: red;
+    }
+
+    .custom-control {
+        border: 0.5px solid #C2C2C2;
+    }
+
+    .reorder_link {
+        color: #3675B4;
+        border: solid 2px #3675B4;
+        border-radius: 3px;
+        text-transform: uppercase;
+        background: #fff;
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 15px 15px 15px 0px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.35s;
+        -moz-transition: all 0.35s;
+        -webkit-transition: all 0.35s;
+        -o-transition: all 0.35s;
+        white-space: nowrap;
+    }
+
+        .reorder_link:hover {
+            color: #fff;
+            border: solid 2px #3675B4;
+            background: #3675B4;
+            box-shadow: none;
+        }
+
+    #reorder-helper {
+        margin: 18px 10px;
+        padding: 10px;
+    }
+
+    .light_box {
+        background: #efefef;
+        padding: 20px;
+        margin: 10px 0;
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    .gallery {
+        width: 100%;
+        float: left;
+        margin-top: 0;
+    }
+
+        .gallery ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+            .gallery ul li {
+                padding: 7px;
+                border: 2px solid #ccc;
+                float: left;
+                margin: 10px 7px;
+                background: none;
+                width: auto;
+                height: auto;
+            }
+
+        .gallery img {
+            width: 200px;
+            height: 125px;
+        }
+
+    /* NOTICE */
+    .notice, .notice a {
+        color: #fff !important;
+    }
+
+    .notice {
+        z-index: 8888;
+    }
+
+        .notice a {
+            font-weight: bold;
+        }
+
+    .notice_error {
+        background: #E46360;
+    }
+
+    .notice_success {
+        background: #657E3F;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-image: url('../../assets/images/ajax-loader.gif');
+        /*background: url('images/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);*/
+    }
+
+    #divLoading {
+        display: none;
+    }
+
+        #divLoading.show {
+            display: block;
+            position: fixed;
+            z-index: 100;
+            background-image: url('../../assets/images/ajax-loader.gif');
+            background-color: #666;
+            opacity: 0.7;
+            background-repeat: no-repeat;
+            background-position: center;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            top: 0;
+        }
+
+    #loadinggif.show {
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        z-index: 101;
+        width: 32px;
+        height: 32px;
+        margin-left: -16px;
+        margin-top: -16px;
+    }
+</style>
+<div class="img-pop-container">
+    <div class="img-pop">
+        <img class="img-responsive">
+    </div>
+</div>
+<link href="~/Content/dropzone.css" rel="stylesheet" />
+<h3 class="main-header">Vehicle Inventory > Upload Wizard</h3>
+<p id="validateInformation" style="display:none;text-align:center;"></p>
+<div class="LoadingImage">
+    <form id="UploadWizard" action="@Url.Content("~/Inventory/Wizard")" method="post" enctype="multipart/form-data">
+        <input type="hidden" value="1" id="hdnTabCounts" />
+        @Html.AntiForgeryToken()
+        <div class="panel panel-default main-panel">
+            <div class="panel-body">
+                <div class="rootwizard" id="rootwizard" style="padding:15px;">
+                    <div class="custom-pills-wrapper">
+                        <ul class="custom-pills pull-right">
+                            <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" data-toggle="tab" href="#tab1" tabindex="1">1</a></li>
+                            <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" href="#tab2" data-toggle="tab" tabindex="2">2</a></li>
+                            <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" id="TabClick" href="#tab3" data-toggle="tab" tabindex="3">3</a></li>
+                            <li class="custom-pills-list"><a class="custom-pills-anchor btn-next" href="#tab4" data-toggle="tab" tabindex="4">4</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="Information">
+                        <div class="tab-pane" id="tab1">
+                            <h3 class="header-primary">INFORMATION</h3>
+                            <input type="hidden" value="@Model.VehicleID" id="VehicleID" name="VehicleID">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="vin">VIN: <span class="requiredField">*</span></label>
+                                        <input type="text" class="form-control custom-control" max="17" min="17" maxlength="17" id="vin" name="VIN" required>
+                                        <span class="has-error hide" id="VinVal">VIN Can't be empty!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="transmission">Condition:<span class="requiredField">*</span></label>
+                                        @Html.DropDownList("AutoUsedStatusID", null, "Select Condition", new { id = "vehicleStatus", @class = "form-control  custom-control", required = true })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="p_num">Plate Number: <span class="requiredField" style="display:none;" id="plateError">*</span></label>
+                                        <input type="text" class="form-control custom-control" id="p_num" name="PlateNumber" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="s_num">Stock #: <span class="requiredField">*</span></label>
+                                        <input type="text" class="form-control custom-control" id="s_num" name="StockNumber" required>
+                                        <span class="has-error hide" id="STNVal">StockNo Can't be empty!</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="make">Vehicle Type: <span class="requiredField"></span></label>
+                                        @Html.DropDownList("VehicleTypeID", null, "Select Type", new { @class = "form-control custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group" id="MakeGrp">
+                                        <label for="make">Make: <span class="requiredField">*</span></label>
+                                        @Html.DropDownList("MakerID", null, "Select Make", new { @class = "form-control custom-control", required = true })
+                                        <span class="has-error hide" id="MakeVal">Make Can't be empty!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group" id="ModelGrp">
+                                        <label for="model">Model: <span class="requiredField">*</span></label>
+                                        @Html.DropDownList("AutoModelID", null, "Select Model", new { @class = "form-control custom-control", required = true })
+                                        <span class="has-error hide" id="ModelVal">Make Can't be empty!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group" id="SubModelGrp">
+                                        <label for="trim">Sub Model:</label>
+                                        @Html.DropDownList("SubModelID", null, "Select Model", new { @class = "form-control custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="year">Year: <span class="requiredField">*</span></label>
+                                        @Html.DropDownList("YearID", null, "Select Year", new { @class = "form-control custom-control", required = true })
+                                        <span class="has-error hide" id="YearVal">Year Can't be empty!</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="odometer">Odometer: <span class="requiredField">*</span></label>
+                                        <input type="number" class="form-control custom-control" id="odometer" name="Odometer" required>
+                                        <span class="has-error hide" id="OdometerVal">Odometer Can't be empty!</span>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="a_bags">Air Bags (ex. 2, 4, 6, 11)<span class="requiredField">*</span></label>
+                                        @Html.DropDownList("AutoAirBagID", null, "Select Value", new { @class = "form-control  custom-control", required = true })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="i_color">Interior Color:</label>
+                                        @Html.DropDownList("AutoInteriorColorID", null, "Select Interior Color", new { @class = "form-control  custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="door">Doors:</label>
+                                        @Html.DropDownList("AutoDoorsID", null, "Select Doors", new { @class = "form-control  custom-control" })
+                                    </div>
+                                </div>
+                                
+                                
+                               
+                                
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="e_color">Exterior Color:</label>
+                                        @Html.DropDownList("AutoExteriorColorID", null, "Select Exterior Color", new { @class = "form-control  custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="engine">Engine:</label>
+                                        @Html.DropDownList("AutoEngineID", null, "Select Engine", new { @class = "form-control  custom-control" })
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="d_type">Drive Type:</label>
+                                        @Html.DropDownList("DriveTypeID", null, "Select Drive Type", new { id = "d_type", @class = "form-control  custom-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="f_type">Fuel Type:</label>
+                                        @Html.DropDownList("FuelTypeID", null, "Select Fuel Type", new { id = "f_type", @class = "form-control  custom-control" })
+                                    </div>
+                                </div>
+                                <script>
+                                var select = document.getElementById("f_type");
+                                debugger;
+                                for (var ii = 0; ii < select.length; ii++)
+                                    if (select.options[ii].text == "Petrol") { //Found!
+                                        select.options[ii].selected = true;
+
+                                    }
+                                </script>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="transmission">Transmission:</label>
+                                        @Html.DropDownList("AutoTransmissionID", null, "Select Transmission", new { id = "transmission", @class = "form-control  custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="make">Audio Player:</label>
+                                        @Html.DropDownList("MediaPlayerID", null, "Select Audio", new { @class = "form-control custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="make">Roof Type:</label>
+                                        @Html.DropDownList("RoofTypeID", null, "Select Roof", new { @class = "form-control custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="make">Upholstery:</label>
+                                        @Html.DropDownList("UpholsteryID", null, "Select Upholstery", new { @class = "form-control custom-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="checkbox-success" style="padding-left: 10px;">
+                                        <br />
+                                        <input id="IsFeatured" class="styled" type="checkbox" value="false" name="IsFeatured">
+                                        <label for="checkbox3">
+                                            Is Featured
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-8">
+                                    <div class="form-group custom-group">
+                                        <label for="f_text">Free Text:</label>
+                                        <textarea class="form-control custom-control" name="FreeText" id="f_text"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <h3 class="header-primary">PRICE & WARRANTY</h3>
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="p_cost">Purchasing Cost:</label>
+                                        <input type="number" class="form-control custom-control" id="s_price" placeholder="Purchasing Cost" name="PurchasingCost">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4">
+                                    <div class="form-group custom-group">
+                                        <label for="s_price">Selling price:</label>
+                                        <input type="number" class="form-control custom-control" id="s_price" placeholder="Vehicle Price" name="VehiclePrice">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group custom-group">
+                                        <label for="warranty">Warranty:</label>
+                                        <textarea class="form-control custom-control" id="warranty" name="WarantyText"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab3">
+                            <h3 class="header-primary">DESCRIPTION</h3>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group custom-group">
+                                        <textarea class="form-control custom-control" id="desc" name="Description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab4">
+                            <h3 class="header-primary" style="color:#f37b2e">Gallery</h3>
+                            <p class="alert alert-success" id="gallerySuccess" style="display:none;"></p>
+                            <p class="alert alert-danger" id="galleryError" style="display:none;"></p>
+                            <div class="row">
+                                <div class="col-md-8 col-lg-9">
+                                    <div class="gallery-container">
+                                        <div class="row" id="" title="gallery">
+                                            <a href="javascript:void(0);" class="btn btn-custom reorderImages" id="save_reorder" style="margin-left: 10px;">Enable Reordering</a>
+                                            <div class="gallery">
+                                                <ul class="reorder_ul reorder-photos-list ui-sortable" id="galleryContainerdiv"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-3">
+                                    <div class="col-md-12 col-lg-12">
+                                        <label class="btn btn-block btn-custom btn-file" onclick="$('#my-awesome-dropzone').click();">
+                                            Upload File
+                                        </label>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="drop-upload v-center-parent" id="DropZoneArea">
+                                            <div class="dropzone"
+                                                 id="my-awesome-dropzone" style="height:100%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-auto-center" style="width: 50%;">
+                        <div class="col-md-4 col-lg-4">
+                            <button type="button" class="btn btn-block btn-previous btn-custom">Previous</button>
+                        </div>
+                        <div class="col-md-4 col-lg-4">
+                            <button type="submit" onclick="showLoader();" class="btn btn-block btn-submit btn-custom" id="btnSubmit" value="" disabled>Finish</button>
+                        </div>
+                        <div class="col-md-4 col-lg-4">
+                            <button type="button" class="btn btn-block btn-next btn-custom" id="btnNext">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="divLoading" class="container-fluid left-margin">
+</div>
+@section Scripts{
+    <script src="~/assets/plugins/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/assets/plugins/twitter-bootstrap-wizard-master/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/assets/plugins/twitter-bootstrap-wizard-master/prettify.js"></script>
+    <script src="~/assets/plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/assets/scripts/inventoryadd.js"></script>
+    <script type="text/javascript">
+        var allFiles = [];
+        function readURL(input) {
+            if (input.files && input.files.length > 0) {
+                for (var i = 0; i < input.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var imageId = $("ul.reorder-photos-list li").length;
+                        imageId = imageId + 1;
+                        var html = '<li id="image_li_' + imageId + '" class="ui-sortable-handle"><a href="javascript:void(0);" style="float: none;" class="image_link"><img  class="img-focusable" src=' + e.target.result + ' alt=""></a></li>';
+                        $('#galleryContainerdiv').append(html);
+                        //$('#img1').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        }
+        function readURLDropZone(input,imageId) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                //var imageId = $("ul.reorder-photos-list li").length;
+                var html = '<li id="image_li_' + imageId + '" class="ui-sortable-handle"><a href="javascript:void(0);" style="float: none;" class="image_link"><img class="img-focusable" src=' + e.target.result + ' alt=""></a><a href="javascript:void(0)" class="remove" onclick="RemoveGalleryImage('+imageId+')"><i class="fa fa-close"></i></a></li>';
+                $('#galleryContainerdiv').append(html);
+                //$('#img1').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input);
+        }
+        $("#MultipleFiles").change(function () {
+            readURL(this);
+        });
+
+    </script>
+    <script src="~/Scripts/dropzone.js"></script>
+<script type="text/javascript" src="~/assets/plugins/blockUI.js"></script>
+<script type="text/javascript">
+
+    function showLoader(){
+        $("div#divLoading").addClass('show');
+    }
+
+        Dropzone.options.myAwesomeDropzone = {
+            paramName: "file",
+            autoProcessQueue: true,
+            maxFilesize: 10,
+            url: '@Url.Content("~/Inventory/SaveUploadedFile?vehicleId=")'+ @Model.VehicleID,
+            previewsContainer: "#galleryContainerdiv",
+            uploadMultiple: true,
+            parallelUploads: 5,
+            createImageThumbnails: false,
+            maxFiles: 20,
+            init: function () {
+                var cd;
+
+                this.on("addedfile", function () {
+                    console.log('drop');
+                    $.blockUI({ message: '<div class="upload-loader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>' });
+                });
+
+                this.on("drop", function () {
+                    console.log('drop');
+                    $.blockUI({ message: '<div class="upload-loader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>' });
+                });
+
+                this.on("error", function () {
+                    $.unblockUI();
+                });
+
+                this.on("success", function (file, response) {
+                    if(response.ImageID !=0){
+                        readURLDropZone(file, response.ImageID);
+                    }
+                    this.removeFile(file);
+                    $('.dz-progress').hide();
+                    $('.dz-size').hide();
+                    $('.dz-error-mark').hide();
+                    allFiles.push(file);
+                    cd = response;
+                    $.unblockUI();
+                });
+            },
+            onComplete: function () {
+                $('#gallerySuccess').html("New Image Added")
+                $('#gallerySuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                $.unblockUI();
+            }
+        };
+</script>
+    @*<script type="text/javascript">
+        Dropzone.options.myAwesomeDropzone = {
+            paramName: "file",
+            autoProcessQueue: true,
+            maxFilesize: 10,
+            url: '@Url.Content("~/Inventory/SaveUploadedFile?vehicleId=")'+ @Model.VehicleID,
+            previewsContainer: "#galleryContainerdiv",
+            uploadMultiple: true,
+            parallelUploads: 5,
+            createImageThumbnails: false,
+            maxFiles: 20,
+            init: function () {
+                var cd;
+
+                this.on("success", function (file, response) {
+                    if(response.ImageID !=0){
+                        readURLDropZone(file, response.ImageID);
+                    }
+                    this.removeFile(file);
+                    $('.dz-progress').hide();
+                    $('.dz-size').hide();
+                    $('.dz-error-mark').hide();
+                    allFiles.push(file);
+                    cd = response;
+                });
+            },
+            onComplete: function () {
+
+            }
+        };
+    </script>*@
+    <script type="text/javascript">
+        $('#AutoModelID').change(function () {
+            var modelId = $(this).val();
+            if (modelId !=undefined && modelId !='' && modelId !=null) {
+                $("div#divLoading").addClass('show');
+                $.ajax({
+                    url: '@Url.Content("~/Inventory/GetSubModelWizard")',
+                    data: { AutoModelID: modelId },
+                    type: 'POST',
+                }).success(function (data) {
+                    if (data != null) {
+                        $('#SubModelGrp').html(data);
+                        $("div#divLoading").removeClass('show');
+                    }
+                }).error(function (Xhr, status, error) {
+                    $("div#divLoading").removeClass('show');
+                });
+            }
+        });
+        $('#MakerID').change(function () {
+            debugger;
+            var makerId = $(this).val();
+            if (makerId !=undefined && makerId !='' && makerId !=null) {
+                $("div#divLoading").addClass('show');
+                $.ajax({
+                    url: '@Url.Content("~/Inventory/GetModelWizard")',
+                    data: { MakerID: makerId },
+                    type: 'POST',
+                }).success(function (data) {
+                    if (data != null) {
+                        $('#ModelGrp').html(data);
+                        $("div#divLoading").removeClass('show');
+                    }
+                }).error(function (Xhr, status, error) {
+                    $("div#divLoading").removeClass('show');
+                });
+            }
+        });
+        $('#VehicleTypeID').change(function () {
+            var vehicleTypeID = $(this).val();
+            if (vehicleTypeID !=undefined && vehicleTypeID !='' && vehicleTypeID !=null) {
+                $("div#divLoading").addClass('show');
+                $.ajax({
+                    url: '@Url.Content("~/Inventory/GetMakeWizard")',
+                    data: { VehicleTypeID: vehicleTypeID },
+                    type: 'POST',
+                }).success(function (data) {
+                    if (data != null) {
+                        $('#MakeGrp').html(data);
+                        $("div#divLoading").removeClass('show');
+                    }
+                }).error(function (Xhr, status, error) {
+                    $("div#divLoading").removeClass('show');
+                });
+            }
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.reorderImages').on('click', function () {
+                var text= $(this).text();
+                $("ul.reorder-photos-list").sortable({ tolerance: 'pointer' });
+                $('.reorderImages').html('Save Reordering');
+                $('.reorderImages').attr("id", "save_reorder");
+                $('#reorder-helper').slideDown('slow');
+                $('.image_link').attr("href", "javascript:void(0);");
+                $('.image_link').css("cursor", "move");
+                $("#save_reorder").click(function (e) {
+                    if (!$("#save_reorder i").length) {
+                        $("div#divLoading").addClass('show');
+                        //$(this).html('').prepend('<img src= "~/assets/images/refresh-animated.gif"/>');
+                        //$("ul.reorder-photos-list").sortable('destroy');
+                        $("#reorder-helper").html("Reordering Photos - This could take a moment. Please don't navigate away from this page.").removeClass('light_box').addClass('notice notice_error');
+                        var h = [];
+                        $("ul.reorder-photos-list li").each(function () { h.push($(this).attr('id').substr(9)); });
+                        var listIds = '';
+                        $.ajax({
+                            type: "POST",
+                            url: "@Url.Content("~/Inventory/UpdateFeaturedImages")",
+                            data: { ImageIDs: h },
+                            success: function () {
+                                //window.location.reload();
+                                $('.reorderImages').html('Enable Reordering');
+                                $("div#divLoading").removeClass('show');
+                                $('#validateInformation').css('color', 'green');
+                                $('#validateInformation').html('Order saved successfuly!');
+                                $("div#divLoading").removeClass('show');
+                                $("ul.reorder-photos-list").sortable('destroy');
+                                $('#gallerySuccess').html("Images Order Updated")
+                                $('#gallerySuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                            }
+                        });
+                        return false;
+                    }
+                    e.preventDefault();
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $('#IsFeatured').change(function(){
+            if(this.checked){
+                $(this).val('true');
+            }else{
+                $(this).val('false');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(document).ajaxStart(function() {
+                $("div#divLoading").addClass('show');
+            }).ajaxStop(function() {
+                $("div#divLoading").removeClass('show');
+            });
+            $('body').on('click', '.img-focusable', function() {
+                $('.img-pop img').attr('src', $(this).attr('src'));
+                $('.img-pop-container').fadeIn(100);
+            });
+
+            $('.img-pop-container').on('click', function() {
+                $(this).fadeOut(100);
+            });
+            $("#vehicleStatus").change(function () {
+                $this = $(this);
+                debugger;
+                if ($this.val() == 3) {
+                    $("#p_num").attr("disabled", "true");
+                    $("#p_num").removeAttr("required");
+                    $("#plateError").hide();
+                    $("#p_num").val("");
+                }
+                else {
+                    $("#p_num").attr("required", "true");
+                    $("#p_num").removeAttr("disabled");
+                    $("#plateError").show();
+                }
+            });
+        });
+        function RemoveGalleryImage(id) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RemoveVehicleImage", "Vir")',
+                data: { imageId: id },
+                success: function (returndata) {
+
+                    if (returndata.Success) {
+                        $("#image_li_" + id).remove();
+                        $('#gallerySuccess').html("Galllery Image Removed")
+                        $('#gallerySuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+
+                    }
+                    else {
+
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+        }
+    </script>
+}

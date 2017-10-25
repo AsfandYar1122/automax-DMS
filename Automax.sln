@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMax", "AutoMax\AutoMax.csproj", "{330207DC-8291-44C7-BECC-4C37D424F95B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMax.Models", "AutoMax.Models\AutoMax.Models.csproj", "{2C5F866D-3761-4289-A31A-B94E02C5731B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMax.Repository", "AutoMax.Repository\AutoMax.Repository.csproj", "{CEAC15FB-1F1F-46D9-8599-560B2BA77751}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMax.Common", "AutoMax.Common\AutoMax.Common.csproj", "{39479742-C779-4A95-8DA1-1712E284A071}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaxPostingService", "AutomaxPostingService\AutomaxPostingService\AutomaxPostingService.csproj", "{D99F860C-281F-46B0-8096-66E704C93525}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostingTester", "PostingTester\PostingTester.csproj", "{C2640F24-5722-4218-B6B7-73E1F0FC7DC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMax.PostingLibrary", "AutoMax.PostingLibrary\AutoMax.PostingLibrary.csproj", "{2F599CE4-4449-431E-AFB0-C3EFF490B884}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{330207DC-8291-44C7-BECC-4C37D424F95B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330207DC-8291-44C7-BECC-4C37D424F95B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330207DC-8291-44C7-BECC-4C37D424F95B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330207DC-8291-44C7-BECC-4C37D424F95B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5F866D-3761-4289-A31A-B94E02C5731B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5F866D-3761-4289-A31A-B94E02C5731B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5F866D-3761-4289-A31A-B94E02C5731B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5F866D-3761-4289-A31A-B94E02C5731B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEAC15FB-1F1F-46D9-8599-560B2BA77751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEAC15FB-1F1F-46D9-8599-560B2BA77751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEAC15FB-1F1F-46D9-8599-560B2BA77751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEAC15FB-1F1F-46D9-8599-560B2BA77751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39479742-C779-4A95-8DA1-1712E284A071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39479742-C779-4A95-8DA1-1712E284A071}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39479742-C779-4A95-8DA1-1712E284A071}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39479742-C779-4A95-8DA1-1712E284A071}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D99F860C-281F-46B0-8096-66E704C93525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99F860C-281F-46B0-8096-66E704C93525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99F860C-281F-46B0-8096-66E704C93525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99F860C-281F-46B0-8096-66E704C93525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2640F24-5722-4218-B6B7-73E1F0FC7DC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2640F24-5722-4218-B6B7-73E1F0FC7DC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2640F24-5722-4218-B6B7-73E1F0FC7DC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2640F24-5722-4218-B6B7-73E1F0FC7DC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F599CE4-4449-431E-AFB0-C3EFF490B884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F599CE4-4449-431E-AFB0-C3EFF490B884}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F599CE4-4449-431E-AFB0-C3EFF490B884}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F599CE4-4449-431E-AFB0-C3EFF490B884}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://automaxdev.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AutoMax.Common\\AutoMax.Common.csproj
+		SccProjectName1 = AutoMax.Common
+		SccLocalPath1 = AutoMax.Common
+		SccProjectUniqueName2 = AutoMax.Models\\AutoMax.Models.csproj
+		SccProjectName2 = AutoMax.Models
+		SccLocalPath2 = AutoMax.Models
+		SccProjectUniqueName3 = AutoMax.Repository\\AutoMax.Repository.csproj
+		SccProjectName3 = AutoMax.Repository
+		SccLocalPath3 = AutoMax.Repository
+		SccProjectUniqueName4 = AutoMax\\AutoMax.csproj
+		SccProjectName4 = AutoMax
+		SccLocalPath4 = AutoMax
+		SccProjectUniqueName5 = AutomaxPostingService\\AutomaxPostingService\\AutomaxPostingService.csproj
+		SccProjectName5 = AutomaxPostingService/AutomaxPostingService
+		SccLocalPath5 = AutomaxPostingService\\AutomaxPostingService
+		SccProjectUniqueName6 = PostingTester\\PostingTester.csproj
+		SccProjectName6 = PostingTester
+		SccLocalPath6 = PostingTester
+		SccProjectUniqueName7 = AutoMax.PostingLibrary\\AutoMax.PostingLibrary.csproj
+		SccProjectName7 = AutoMax.PostingLibrary
+		SccLocalPath7 = AutoMax.PostingLibrary
+	EndGlobalSection
+EndGlobal

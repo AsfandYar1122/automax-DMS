@@ -1,0 +1,146 @@
+﻿@model AutoMax.Models.DataModel.DashboardViewModel
+`@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<h3 class="main-header">Dashboard</h3>
+<div class="panel panel-default main-panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="small-box-container m-top-20 m-bottom-20">
+                    <div class="small-box v-center-parent add-bg-04">
+                        <div class="v-center-child text-center">
+                            <p class="main">
+                                @String.Format("{0:#,###0}", Model.SoldVehicles)
+                            </p>
+                            <p class="sub">Sold</p>
+                        </div>
+                    </div>
+                    <div class="small-box v-center-parent add-bg-05">
+                        <div class="v-center-child text-center">
+                            <p class="main">@String.Format("{0:#,###0}", Model.CurrentIndevntory)</p>
+                            <p class="sub">Current Inventory</p>
+                        </div>
+                    </div>
+                    <div class="small-box v-center-parent add-bg-06">
+                        <div class="v-center-child text-center">
+                            <p class="main">@String.Format("{0:#,###0}", Model.VehicleInStock)</p>
+                            <p class="sub">Total</p>
+                        </div>
+                    </div>
+                    <div class="small-box v-center-parent add-bg-07">
+                        <div class="v-center-child text-center">
+                            <p class="main">@String.Format("{0:#,###0}", Model.VIRPending)</p>
+                            <p class="sub">Pending TAQEEM</p>
+                        </div>
+                    </div>
+                    <div class="small-box v-center-parent add-bg-08">
+                        <div class="v-center-child  text-center">
+                            <p class="main">@String.Format("{0:#,###0}", Model.VIRCompleted)</p>
+                            <p class="sub">TAQEEM Completed</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="header-secondary">INVENTORY SELECTION</h3>
+                        <div id="piechart" style="height: 300px; overflow: hidden; text-align: left;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="header-secondary">Inventory & TAQEEM</h3>
+                        <div id="lineChart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Name', 'Total No of Inventory'],
+              @Html.Raw(Model.PieChartDataString)
+            ]);
+            var options = {
+                title: 'Total Cars by User'
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    </script>
+    <script type="text/javascript">
+        AmCharts.makeChart("lineChart",
+    {
+        "type": "serial",
+        "categoryField": "category",
+        "colors": [
+            "#63d0cb",
+            "#7694ef"
+        ],
+        "startDuration": 1,
+        "categoryAxis": {
+            "gridPosition": "start"
+        },
+        "trendLines": [],
+        "graphs": [
+            {
+                "balloonText": "[[title]] of [[category]]:[[value]]",
+                "bullet": "round",
+                "id": "AmGraph-1",
+                "title": "Shared on OpenSouq",
+                "valueField": "OSColumn"
+            },
+            {
+                "balloonText": "[[title]] of [[category]]:[[value]]",
+                "bullet": "square",
+                "id": "AmGraph-2",
+                "title": "Shared on Facebook",
+                "valueField": "FBColumn"
+            },
+            {
+                "balloonText": "[[title]] of [[category]]:[[value]]",
+                "bullet": "square",
+                "id": "AmGraph-3",
+                "title": "Shared on Haraj",
+                "valueField": "HRJColumn"
+            }
+        ],
+        "guides": [],
+        "valueAxes": [
+            {
+                "id": "ValueAxis-1",
+                "title": "Total Shares"
+            }
+        ],
+        "allLabels": [],
+        "balloon": {},
+        "legend": {
+            "enabled": true,
+            "useGraphSettings": true
+        },
+        "titles": [
+            {
+                "id": "Title-1",
+                "size": 0,
+                "text": ""
+            }
+        ],
+        "dataProvider": @Html.Raw(Json.Encode(ViewBag.DisplayLineChart))
+    });
+    </script>
+}
+

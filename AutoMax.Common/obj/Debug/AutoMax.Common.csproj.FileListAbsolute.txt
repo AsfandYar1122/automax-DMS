@@ -1,0 +1,9 @@
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\bin\Debug\AutoMax.Common.dll.config
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\bin\Debug\AutoMax.Common.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\bin\Debug\AutoMax.Common.pdb
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\bin\Debug\AutoMax.Models.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\bin\Debug\EntityFramework.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\bin\Debug\AutoMax.Models.pdb
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\obj\Debug\AutoMax.Common.csprojResolveAssemblyReference.cache
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\obj\Debug\AutoMax.Common.dll
+E:\Code\AutoMaxTFS\Automax\AutoMax.Common\obj\Debug\AutoMax.Common.pdb

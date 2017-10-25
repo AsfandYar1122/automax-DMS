@@ -1,0 +1,64 @@
+﻿@model AutoMax.Models.Entities.User
+@{
+    ViewBag.Title = "Create User";
+}
+<h3 class="main-header">Create User</h3>
+<div class="panel panel-default main-panel" style="margin-top:36px;">
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal" style="width:100%; margin:0 auto">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group custom-group">
+                        <label for="s_num">Email</label>
+                        <input type="email" class="form-control custom-control" id="s_num" name="Email" value="@Model.Email" required>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group custom-group">
+                        <label for="s_num">First Name</label>
+                        <input type="text" class="form-control custom-control" id="s_num" name="FirstName" value="@Model.FirstName" required>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group custom-group">
+                        <label for="s_num">Last Name</label>
+                        <input type="text" class="form-control custom-control" id="s_num" name="LastName" value="@Model.LastName" required>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group custom-group">
+                        <label for="s_num">Password</label>
+                        <input type="password" class="form-control custom-control" id="s_num" name="Password" value="@Model.Password" required>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group custom-group">
+                        <label for="s_num">Select Role</label>
+                        @Html.DropDownList("UserRoleID", (List<SelectListItem>)ViewBag.UserRoleID, "Select Role", new { @class = "form-control custom-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="clear:both;">
+                <div class="form-group custom-group">
+                    <div class="col-md-1">
+                        <input type="submit" value="Save" class="btn btn-block btn-submit btn-custom" />
+                    </div>
+                    <div class="col-md-2">
+                        @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-block backToList " })
+                    </div>
+                </div>
+            </div>
+
+
+        }
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://use.fontawesome.com/5df3e9a121.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/datatables/datatables.min.js"></script>
+}

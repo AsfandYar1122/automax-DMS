@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+@{
+    ViewBag.Title = "Publish Settings";
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/plugins/style.css">
+</head>
+<body>
+
+    <div class="container-fluid right-margin">
+        <h3 class="main-header">Exchange / Publish Settings</h3>
+        @Html.Partial("_Notifications")
+        <div class="panel panel-default main-panel">
+            <div id="publish-setting" class="panel-body view-height-250">
+                <form action="" method="">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="text-center"><i class="fa fa-cogs"></i></div>
+                                    <h2 class="text-center">haraj.com.sa</h2>
+                                </div>
+                                <div class="panel-footer clearfix">
+                                    <div class="pull-right">
+                                        @*<button type="button" class="btn btn-custom">Account Settings</button>
+                                            <button type="button" class="btn btn-custom">Field Mappings</button>*@
+                                        <button type="button" class="btn btn-custom" onclick="location.href='@(Url.Content("~/PublishSettings/IndexbySiteID/2"))'">Publish Settings</button>
+                                        <button type="button" class="btn btn-custom" onclick="location.href='@(Url.Content("~/PublishSettings/MakeMapping?CompanyName="))@AutoMax.Common.Enums.PostingSites.HARAJ.ToString()'">Make Mappings</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="text-center"><i class="fa fa-cogs"></i></div>
+                                    <h2 class="text-center">opensouq.com</h2>
+                                </div>
+                                <div class="panel-footer clearfix">
+                                    <div class="pull-right">
+                                        @*<button type="button" class="btn btn-custom">Account Settings</button>
+                                            <button type="button" class="btn btn-custom">Field Mappings</button>*@
+                                        <button type="button" class="btn btn-custom" onclick="location.href='@(Url.Content("~/PublishSettings/IndexbySiteID/1"))'">Publish Settings</button>
+                                        <button type="button" class="btn btn-custom" onclick="location.href='@(Url.Content("~/PublishSettings/MakeMapping?CompanyName="))@AutoMax.Common.Enums.PostingSites.OPENSOUQ.ToString()'">Make Mappings</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="~/assets/plugins/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

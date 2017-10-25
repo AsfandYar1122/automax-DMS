@@ -1,0 +1,1207 @@
+﻿﻿@model AutoMax.Models.VirMainViewModel
+@using AutoMax.Common.Enums;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutGrid.cshtml";
+    var l = Model.Vir.Flag;
+    var userName = ComonMethods.GetUserName(User.Identity.Name);
+    var userRole = User.Identity.Name.GetUserRole();
+}
+
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/easypiechart/stylesheets/jquery.easy-pie-chart.css">
+
+<script src="https://use.fontawesome.com/5df3e9a121.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src="~/assets/plugins/datatables/datatables.min.js"></script>
+
+<style type="text/css">
+    #dropZone {
+        background: gray;
+        border: black dashed 3px;
+        width: 200px;
+        padding: 50px;
+        text-align: center;
+        color: white;
+    }
+
+    .requiredField {
+        color: red;
+    }
+
+    .custom-control {
+        border: 0.5px solid #C2C2C2;
+    }
+
+    .reorder_link {
+        color: #f37b2e;
+        border: solid 2px #f37b2e;
+        border-radius: 3px;
+        text-transform: uppercase;
+        background: #fff;
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 15px 15px 15px 0px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.35s;
+        -moz-transition: all 0.35s;
+        -webkit-transition: all 0.35s;
+        -o-transition: all 0.35s;
+        white-space: nowrap;
+    }
+
+        .reorder_link:hover {
+            color: #fff;
+            border: solid 2px #3675B4;
+            background: #3675B4;
+            box-shadow: none;
+        }
+
+    #reorder-helper {
+        margin: 18px 10px;
+        padding: 10px;
+    }
+
+    .light_box {
+        background: #efefef;
+        padding: 20px;
+        margin: 10px 0;
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    .gallery {
+        width: 100%;
+        float: left;
+        margin-top: 0;
+    }
+
+        .gallery ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+            .gallery ul li {
+                padding: 7px;
+                border: 2px solid #ccc;
+                float: left;
+                margin: 10px 7px;
+                background: none;
+                width: auto;
+                height: auto;
+            }
+
+        .gallery img {
+            width: 200px;
+            height: 125px;
+        }
+
+    /* NOTICE */
+    .notice, .notice a {
+        color: #fff !important;
+    }
+
+    .notice {
+        z-index: 8888;
+    }
+
+        .notice a {
+            font-weight: bold;
+        }
+
+    .notice_error {
+        background: #E46360;
+    }
+
+    .notice_success {
+        background: #657E3F;
+    }
+</style>
+
+<div id="address_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="" method="" id="addressForm">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal" id="close">&times;</a>
+                    <h4 class="modal-title">Address Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p class="alert alert-success" id="addressSuccess" style="display:none;"></p>
+                        <p class="alert alert-danger" id="addressError" style="display:none;"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control custom-control" name="" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="p_address">Physical Address</label>
+                        <input type="text" class="form-control custom-control" id="p_address" name="" required>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-custom" value="Save" id="saveAddress" />
+                    <a class="btn btn-default" data-dismiss="modal">Close</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="img-pop-container">
+    <div class="img-pop">
+        <img class="img-responsive">
+    </div>
+</div>
+<div id="field-box-container" class="field-box-container">
+    <div class="container v-center-child" style="z-index: 9999;">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <h3 id="field-box-title" class="field-box-title"></h3>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="image-box" id="partImages">
+
+                    <div class="image-item" id="div-1"></div>
+                    <div class="image-item" id="div-2"></div>
+                    <div class="image-item" id="div-3"></div>
+                    <div class="image-item" id="div-4"></div>
+                    <div class="image-item" id="div-5"></div>
+                    <div class="image-item" id="div-6"></div>
+                    <div class="image-item" id="div-7"></div>
+                    <div class="image-item" id="div-8"></div>
+                    <div class="image-item" id="div-9"></div>
+                    <div class="image-item" id="div-10"></div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6">
+
+                <div class="field-box">
+                    <form action="" method="">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group custom-group">
+                                    <label for="c_rate">Condition Rating</label>
+                                    <select class="form-control custom-control" id="c_rate" name=""></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group custom-group">
+                                    <label for="severity">Severity</label>
+                                    <select class="form-control custom-control" id="severity" name="">
+
+                                        <option selected="selected">Please Select</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group custom-group">
+                                    <label for="desc">Description</label>
+                                    <textarea class="form-control custom-control" id="desc" name=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-2 col-lg-offset-3 col-md-4 col-lg-3 m-top-30">
+                                <button type="button" class="btn btn-block btn-custom" id="cancel" name="">Cancel</button>
+                            </div>
+                            <div class="col-md-4 col-lg-3 m-top-30">
+                                <button type="button" class="btn btn-block btn-custom" id="done" name="" onclick="UpdatePartInfo()">Done</button>
+                            </div>
+                            <input type="hidden" id="part_id" name="">
+                            <input type="hidden" id="hdnId" name="">
+                            <input type="hidden" id="hdnPercentageId" name="">
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="upload-box v-center-parent" id="uploadPartsImages">
+                    <div class="v-center-child">
+                        <h3 class="text-center">
+                            DRAG<br>YOUR<br>IMAGE<br>HERE
+                            <input type="hidden" id="hiddenid" name="">
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h3 class="main-header">INVENTORY & INSPECTION REPORT</h3>
+<div style="margin: 0px 60px 0px 60px; position: relative;">
+    <ul class="nav nav-tabs">
+        <li class="@((Request["type"] =="info"  || Request["type"] == "gallery")?"":"in active")"><a data-toggle="tab" href="#vir">TAQEEM RATING</a></li>
+        <li class="@(Request["type"] == "info" ? "active" : "")"><a data-toggle="tab" href="#menu1">INFORMATION</a></li>
+        <li><a data-toggle="tab" href="#menu2">OPTIONS</a></li>
+        <li><a data-toggle="tab" href="#menu3">FLAGS</a></li>
+        <li class="@(Request["type"] =="gallery" ? "active": "")"><a data-toggle="tab" href="#menu4">GALLERY</a></li>
+        <li class=""><a data-toggle="tab" href="#menu5">VIDEO</a></li>
+        <li class='pull-right'><a class="btn btn-sm" style="background-color: #f37b2e; color: white;" href="javascript:void(0)" onClick="window.open('@Url.Content("~/VIR/Print?vehicleId="+@Request["id"])')"><i class="fa fa-print"></i> Window Sticker</a></li>
+        @*<li class=""><a class="btn" href="javascript:void(0)" onClick="window.open('/Inventory/DownloadPdf?vehicleid=@Request["id"]')">Print</a></li>*@
+    </ul>
+    <div class="tab-content">
+        <div id="vir" class="tab-pane fade  margin-none  @(Request["type"] == null ? "in active" : "")">
+            <div class="panel panel-default border-top-none">
+                <div class="panel-body view-height-250 custom-panel-padding">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="btn-group btn-group-justified svg-btn-grp">
+                                <a class="btn btn-custom-orange svg-tab-btn  @((Request["part"] == null || Request["part"] =="0")? "active" : "")" href="javascript:void(0)" data-target="#exterior_tab">Exterior</a>
+                                <a class="btn btn-custom-orange svg-tab-btn  @(Request["part"] =="1"? "active" : "")" href="javascript:void(0)" data-target="#interior_tab">Interior</a>
+                                <a class="btn btn-custom-orange svg-tab-btn  @(Request["part"] =="2"? "active" : "")" href="javascript:void(0)" data-target="#mechanics_tab">Mechanics</a>
+                                <a class="btn btn-custom-orange svg-tab-btn  @(Request["part"] =="3"? "active" : "")" href="javascript:void(0)" data-target="#frame_tab">Frame</a>
+                                <a class="btn btn-custom-orange svg-tab-btn" href="javascript:void(0)" data-target="#rating_tab">Overall Rating</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row svg-content m-top-30">
+
+                        @Html.Partial("~/Views/Partials/Vir/Exterior.cshtml", Model.Vir.Exterior)
+                        @Html.Partial("~/Views/Partials/Vir/Interior.cshtml", Model.Vir.Interior)
+                        @Html.Partial("~/Views/Partials/Vir/Mechanic.cshtml", Model.Vir.Mechanics)
+                        @Html.Partial("~/Views/Partials/Vir/Frame.cshtml", Model.Vir.Frame)
+                        <div id="rating_tab" class="svg-tab">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-lg-offset-3 col-md-6 col-lg-6 rating text-center">
+                                    <div class="title">OVERALL GRADING</div>
+                                    @if (Model.Vir.Ratting > 0)
+                                    {
+                                        <span class="text">
+                                            @String.Format("{0:0.00}", Model.Vir.Ratting)
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text">
+                                            4.0
+                                        </span>
+                                    }
+
+                                    @if (Model.Vir.Ratting != 0 && Model.Vir.Ratting < 1.5)
+                                    {
+                                        <h3 class="title-scnd">Very poor</h3>
+                                        @*<span class="text-scnd">Numerous defects that may require major repairs</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 1.5 && Model.Vir.Ratting < 2)
+                                    {
+                                        <h3 class="title-scnd">Poor</h3>
+                                        @*<span class="text-scnd">Minor defects that may require moderate repairs</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 2 && Model.Vir.Ratting < 2.5)
+                                    {
+                                        <h3 class="title-scnd">Below Average</h3>
+                                        @*<span class="text-scnd">Very minor work is required for smooth drive</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 2.5 && Model.Vir.Ratting < 3)
+                                    {
+                                        <h3 class="title-scnd">Above Average</h3>
+                                        @*<span class="text-scnd">Ready for travel but after full service and tuning</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 3 && Model.Vir.Ratting < 3.5)
+                                    {
+                                        <h3 class="title-scnd">Fair</h3>
+                                        @*<span class="text-scnd">Ready to take a ride for small and long journeys</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 3.5 && Model.Vir.Ratting < 4)
+                                    {
+                                        <h3 class="title-scnd">Very Fair</h3>
+                                        @*<span class="text-scnd">Ready to take a ride for small and long journeys</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 4 && Model.Vir.Ratting < 4.5)
+                                    {
+                                        <h3 class="title-scnd">Good</h3>
+                                        @*<span class="text-scnd">Ready to take a ride for small and long journeys</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 4.5 && Model.Vir.Ratting < 5)
+                                    {
+                                        <h3 class="title-scnd">Very Good</h3>
+                                        @*<span class="text-scnd">Ready to take a ride for small and long journeys</span>*@
+                                    }
+                                    else if (Model.Vir.Ratting >= 5)
+                                    {
+                                        <h3 class="title-scnd">Excellent</h3>
+                                        @*<span class="text-scnd">Ready to take a ride for small and long journeys</span>*@
+                                    }
+                                    else
+                                    {
+                                        <h3 class="title-scnd">Good</h3>
+                                        @*<span class="text-scnd">Very Good</span>*@
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Partial("~/Views/Partials/Vir/CarInformation.cshtml", @Model.Information)
+        @Html.Partial("~/Views/Partials/Vir/Options.cshtml", @Model)
+        @Html.Partial("~/Views/Partials/Vir/Flag.cshtml", @Model)
+        @Html.Partial("~/Views/Partials/Vir/Gallery.cshtml")
+        <div id="menu5" class="tab-pane fade margin-none">
+            <div class="panel panel-default border-top-none clsVideoOption">
+                <div class="panel-body view-height-250 custom-panel-padding">
+
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group custom-group">
+                                <p class="alert alert-success" id="videoSuccess" style="display:none;"></p>
+                                <p class="alert alert-danger" id="videoError" style="display:none;"></p>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="input-group-label" for="Video">YouTube Embed URL:</label>
+                                <input type="text" class="form-control custom-control" id="videoUrl" name="" value="">
+
+                            </div>
+
+                            <div class="form-group custom-group">
+                                <a class="btn btn-block btn-custom" name="" value="" onclick="SaveVideo()">Save</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <ul id="videos">
+                        @foreach (var item in ViewBag.VideoGallery as List<AutoMax.Models.Entities.VehicleVideoViewModel>)
+                        {
+
+                            <li id="video-li-@item.VehicleVideoID">@item.VideoPath <span style="margin-left: 10px;"><a href="javascript:void(0);" onclick="RemoveVideo(@item.VehicleVideoID)"><i style="color: #f37b2e;" class="fa fa-close"></i></a></span></li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<style>
+    .error {
+        border: 1px solid;
+        /* height: 20px; */
+        /* width: 160px; */
+        /* color: red; */
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        /* border: 1px; */
+        border-color: red;
+    }
+</style>
+
+@section Scripts{
+    <script type="text/javascript" src="~/assets/plugins/dropzone.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/jquery-circle-progress-master/dist/circle-progress.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/blockUI.js"></script>
+    <script type="text/javascript" src="~/assets/scripts/vir.js"></script>
+
+    <script>
+    $(document).ready(function () {
+
+        var isFinanceUser = '@(userRole == UserRolesConst.Finance ? "true" : "false")';
+        if (isFinanceUser == 'true')
+        {
+            $(".clsVideoOption input,select,checbox,a,choose").each(function () { $(this).attr('disabled', true); });
+            console.log('Finance User');
+        }
+
+    });
+    </script>
+
+    <script>
+        function SubmitEvaluatorRatting(id, type) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("UpdateEvaluatorRatting", "Vir")',
+                data: { vehicleId: id, virPartType: type, ratting: $('#div-part-'+type).val() },
+                success: function (returndata) {
+                    if (returndata.Success) {
+                        location.href = "/VIR?id=" + getUrlParameter('id')+"&part="+type
+                       // console.log(returndata)
+
+                    }
+                    else {
+
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+        }
+        function GetInfo(id) {
+            alert(id);
+        }
+
+        function SaveInfo() {
+            var model = {
+                VehcileId: getUrlParameter('id'), VIN: $("#vin").val(), MakerId: $("#MakerID").val(), ModelId: $("#AutoModelID").val(),
+                EngineId: $("#AutoEngineID").val(), AudioId: $("#VehicleAudioID").val(),
+                ModelId: $("#AutoModelID").val(), Odometer: $("#odometer").val(), StockNumber: $("#stock_no").val(),
+                TransmissionId: $("#transmission").val(), YearId: $("#YearID").val(),
+                ExteriorColorId: $("#AutoExteriorColorID").val(), InteriorColorId: $("#AutoInteriorColorID").val(), DoorsId: $("#AutoDoorsID").val(),
+                FuelTypeId: $("#f_type").val(), DriveTypeId: $("#d_type").val(), FreeText: $("#f_text").val(), InventoryStatusId: $("#InventoryStatusID").val(), Has360: $("#Has360").is(":checked"), VehicleTypeID: $("#VehicleTypeID").val(),
+                AutoUsedStatusID: $("#AutoUsedStatusID").val(), PlateNumber: $("#plateNo").val(), Price: $("#price").val(), PurchasingCost: $("#purchaseCost").val(), SubModelID: $("#SubModelID").val(), ArabicFreeText: $("#ArabicFreeText").val(),
+                AutoAirBagID: $("#AutoAirBagID").val(), RoofTypeID: $("#RoofTypeID").val(), UpholsteryID: $("#UpholsteryID").val()
+
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveInfo", "Vir")',
+                data: model,
+                success: function (returndata) {
+                    if (returndata.Success) {
+                        $('#virInfoSuccess').html("Information Updated")
+                        $('#virInfoSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+
+                    }
+                    else {
+                        $('#virInfoError').html(returndata.Message)
+                        $('#virInfoError').fadeIn('fast').delay(5000).fadeOut('fast');
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+        }
+        function UpdatePartInfo() {
+            var error = false;
+            $("#c_rate").removeClass("error");
+            $("#severity").removeClass("error");
+
+            if ($("#severity").val() == "Please Select") {
+                $("#severity").addClass("error")
+                error = true;
+            }
+            if (!error) {
+                var model = {
+                    Id: $(".div-" + $("#part_id").val()).data("v") == 0 ? -1 : $(".div-" + $("#part_id").val()).data("v"), Condition: $("#c_rate").val(), Severity: $("#severity").val(),
+                    Description: $("#desc").val(),
+                    fkPartId: $("#part_id").val(), fkVehickeId: getUrlParameter('id')
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SavePartInfo", "Vir")',
+                    data: model,
+                    success: function (returndata) {
+
+                        if (returndata.Success) {
+
+                            $(".div-" + model.fkPartId).data("sv", model.Severity);
+                            $(".div-" + model.fkPartId).data("cr", model.Condition);
+                            $(".div-" + model.fkPartId).data("des", model.Description);
+                            $(".div-" + model.fkPartId).data("cor", model.CostOfRepair);
+                            $(".div-" + model.fkPartId).attr("corp", model.CostOfReplacement);
+                            $(".div-" + model.fkPartId).data("esr", model.EstimatedRepairCost);
+
+                            $("#rating-" + $("#part_id").val()).html(returndata.data.Data.PartRatting.toFixed(1));
+                            var id = $('#hdnPercentageId').val();
+                            $("#progress-circle-ex").attr('data-rating-value', returndata.data.Data.ExteriorRatting.toFixed(2));
+                            $("#progress-circle-in").attr('data-rating-value', returndata.data.Data.InteriorRatting.toFixed(2));
+                            $("#progress-circle-mec").attr('data-rating-value', returndata.data.Data.MechanicsRatting.toFixed(2));
+                            $("#progress-circle-fr").attr('data-rating-value', returndata.data.Data.FrameRatting.toFixed(2));
+                            console.log(returndata.data.Data.TotalRatting);
+                            $("#overallGrading").html(returndata.data.Data.TotalRatting.toFixed(2));
+
+                            loadChart("progress-circle-ex", returndata.data.Data.ExteriorRatting.toFixed(2));
+                            loadChart("progress-circle-in", returndata.data.Data.InteriorRatting.toFixed(2));
+                            loadChart("progress-circle-mec", returndata.data.Data.MechanicsRatting.toFixed(2));
+                            loadChart("progress-circle-fr", returndata.data.Data.FrameRatting.toFixed(2));
+                            $('.partSuccess').html($(".div-" + model.fkPartId).data("partname") + "  Information Updated");
+                            $('.partSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                            $("#cancel").click()
+
+
+
+                        }
+
+
+                    },
+                    failure: function (returndata) {
+
+
+                    }
+                }).done(function () {
+
+                });
+            }
+
+        }
+        $(document).ready(function () {
+
+
+            $('#exterior_tab .svg-container').attr('data-parent-container', 'progress-circle-ex');
+
+            var partImage = $('#uploadPartsImages').dropzone({
+                url: '@Url.Action("UploadImagesForVehiclePart", "Vir")',
+                previewTemplate: '<div id="preview-template" style="display: none;"></div>',
+                sending: function (event, xhr, formData) {
+                    formData.set('part_id', $('#part_id').val()),
+                    formData.set('vehicleId', getUrlParameter('id'));
+                },
+                addRemoveLinks: true,
+                success: function (file, returndata) {
+                    var html = "";
+                    if (returndata.Success) {
+                        var j = $(".image-item").find("img").length === 0 ? 0 : $(".image-item").find("img").length;
+                        for (var i = 1; i <= returndata.data.length; i++) {
+                            $("#div-" + (i + j)).html('<img class="img-responsive img-rounded  img-focusable" src="' + returndata.data[i - 1].ImagePath + '">');
+
+                        }
+                      if ($(".div-" + $('#part_id').val()).data('img') === "") {
+                            $(".div-" + $('#part_id').val()).data('img', returndata.data[0].ImagePath);
+                        }
+
+                    }
+                  $.unblockUI();
+
+                },
+                error: function (file, response) {
+                    $.unblockUI();
+                    file.previewElement.classList.add("dz-error");
+                },
+                complete: function () {
+                    console.log("complete");
+                    $.unblockUI();
+                },
+                drop: function () {
+                    console.log('drop');
+                    $.blockUI({ message: '<div class="upload-loader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>' });
+
+                },
+                addedfile: function () {
+                    console.log('drop');
+                    $.blockUI({ message: '<div class="upload-loader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>' });
+
+                }
+
+            });
+            $('#addressForm').click(function (e) {
+                e.preventDefault();
+                var error = false;
+                $("#name").removeClass("error");
+                $("#p_address").removeClass("error");
+                if ($("#name").val() === "") {
+
+                    $("#name").addClass("error");
+                    error = true;
+                }
+                if ($("#p_address").val() === "") {
+
+                    $("#p_address").addClass("error");
+                    error = true;
+                }
+                if (!error) {
+                    var model = { Name: $("#name").val(), PhysicalAddress: $("#p_address").val(), GoogleAddress: "" };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SaveVehicleAddress", "Vir")',
+                        data: model,
+                        success: function (returndata) {
+
+                            if (returndata.Success) {
+                                var html = "";
+                                for (var i = 0; i < returndata.data.Data.length; i++) {
+                                    html += '<option value="' + returndata.data.Data[i].Id + '">' + returndata.data.Data[i].Name + '</option>';
+                                }
+                                $("#p_location").html("");
+                                $("#name").val("");
+                                $("#p_address").val("");
+                                $("#p_location").html(html);
+                                $('#addressSuccess').html("New Address Added")
+                                $('#addressSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                               // $("#address_modal").click();
+                            }
+                            else {
+                                $('#addressError').html(returndata.Message)
+                                $('#addressError').fadeIn('fast').delay(5000).fadeOut('fast');
+                            }
+
+                        },
+                        failure: function (returndata) {
+
+
+                        }
+                    });
+                }
+            });
+            $("#upload").bind("click", function () {
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+                if (regex.test($("#fileUpload").val().toLowerCase())) {
+                    if (typeof (FileReader) != "undefined") {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var table = $("<table />");
+                            var rows = e.target.result.split("\n");
+                            for (var i = 0; i < rows.length; i++) {
+                                var row = $("<tr />");
+                                var cells = rows[i].split(",");
+                                for (var j = 0; j < cells.length; j++) {
+                                    var cell = $("<td />");
+                                    ReadFlags(cells[j]);
+                                    //console.log(cells[j]);
+                                    //cell.html(cells[j]);
+                                    //row.append(cell);
+                                }
+                                // table.append(row);
+                            }
+                            $("#dvCSV").html('');
+                            // console.log(table);
+                            //$("#dvCSV").append(table);
+                        }
+                        reader.readAsText($("#fileUpload")[0].files[0]);
+                        $('#fileUpload').val('');
+                        $('#optionSuccess').html("File Uploaded Successfully.")
+                        $('#optionSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+
+                    } else {
+
+
+                        $('#optionError').html("This browser does not support HTML5.")
+                        $('#optionError').fadeIn('fast').delay(5000).fadeOut('fast');
+                    }
+                } else {
+                    $('#optionError').html("Please upload a valid CSV file.");
+                    $('#optionError').fadeIn('fast').delay(5000).fadeOut('fast');
+
+
+                }
+            });
+        });
+        //$("#addressForm")[0].submit(function () {
+        //    console.log($("#addressForm")[0].checkValidity());
+        //});
+        function SaveFlagOption() {
+            var values = '';
+            $('#flag input[type=checkbox]:checked').each(function () {
+                if (values.length === 0) {
+                    values = this.id;
+                }
+                else {
+                    values += "," + this.id;
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveFlag", "Vir")',
+                data: { VehicleId: getUrlParameter('id'), CsvIDs: values, MoreValue: $("#more_info").val(), AddressId: -1 },
+                success: function (returndata) {
+
+                    if (returndata.Success) {
+                        $('#flagSuccess').html(returndata.Message)
+                        $('#flagSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+
+                    }
+                    else {
+                        $('#flagError').html(returndata.Message)
+                        $('#flagError').fadeIn('fast').delay(5000).fadeOut('fast');
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+        }
+
+        function SaveOptions() {
+            var values = ''
+            $('#interiorList input[type=checkbox]:checked').each(function () {
+                if (values.length === 0) {
+                    values = this.id;
+                }
+                else {
+                    values += "," + this.id;
+                }
+            });
+            $('#systemList input[type=checkbox]:checked').each(function () {
+                if (values.length === 0) {
+                    values = this.id;
+                }
+                else {
+                    values += "," + this.id;
+                }
+            });
+            $('#windowList input[type=checkbox]:checked').each(function () {
+                if (values.length == 0) {
+                    values = this.id;
+                }
+                else {
+                    values += "," + this.id;
+                }
+            });
+            $('#comfortList input[type=checkbox]:checked').each(function () {
+                if (values.length === 0) {
+                    values = this.id;
+                }
+                else {
+                    values += "," + this.id;
+                }
+            });
+            $('#safetyList input[type=checkbox]:checked').each(function () {
+                if (values.length === 0) {
+                    values = this.id;
+                }
+                else {
+                    values += "," + this.id;
+                }
+            });
+
+            var more = $("#more_option").val();
+            //var model = { interior: interiorValues, sytem: systemValues, window: windowValues, comfort: comfortValues, more: more, address: $("#p_location").val() }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveOptions", "Vir")',
+                data: { VehicleId: getUrlParameter('id'), CsvIDs: values, MoreValue: $("#more_option").val(), AddressId: $("#p_location").val() },
+                success: function (returndata) {
+
+                    if (returndata.Success) {
+                        $('#optionSuccess').html("Options information saved");
+                        $('#optionSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+
+                    }
+                    else {
+                        $('#optionError').html(returndata.Message);
+                        $('#optionError').fadeIn('fast').delay(5000).fadeOut('fast');
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+
+        }
+        function ReadFlags(name) {
+            console.log(name);
+
+            $('#interiorList .custom-checkbox').each(function () {
+                var $this = $(this)
+                var h = $this.closest('label').context.innerText;
+                if (h.trim() == name.trim()) {
+                    $this.find("[type=checkbox]").prop("checked", true);
+                }
+
+            });
+            $('#systemList .custom-checkbox').each(function () {
+                var $this = $(this);
+                debugger;
+                var h = $this.closest('label').context.innerText;
+                if (h.trim() === name.trim()) {
+                    $this.find("[type=checkbox]").prop("checked", true);
+                }
+
+            });
+
+            $('#windowList .custom-checkbox').each(function () {
+                var $this = $(this);
+                debugger;
+                var h = $this.closest('label').context.innerText;
+                if (h.trim() === name.trim()) {
+                    $this.find("[type=checkbox]").prop("checked", true);
+                }
+
+            });
+            $('#comfortList .custom-checkbox').each(function () {
+                var $this = $(this);
+                var h = $this.closest('label').context.innerText;
+                if (h.trim() === name.trim()) {
+                    $this.find("[type=checkbox]").prop("checked", true);
+                }
+
+            });
+            $('#safetyList .custom-checkbox').each(function () {
+                var $this = $(this);
+                var h = $this.closest('label').context.innerText;
+                if (h.trim() === name.trim()) {
+                    $this.find("[type=checkbox]").prop("checked", true);
+                }
+
+            });
+        }
+
+        function loadChart(id, value) {
+
+            $('#' + id).circleProgress({
+                value: value / 5,
+                size: 75,
+                startAngle: Math.PI * 1.5,
+                fill: {
+                    gradient: ["red", "orange"]
+                }
+            }).on('circle-animation-progress', function (event, progress) {
+                $(this).find('strong').html((value * progress).toFixed(1));
+            });
+
+        }
+        function RemoveGalleryImage(id) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RemoveVehicleImage", "Vir")',
+                data: { imageId: id },
+                success: function (returndata) {
+
+                    if (returndata.Success) {
+                        $("#image_li_" + id).remove();
+                        $('#gallerySuccess').html("Galllery Image Removed");
+                        $('#gallerySuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                        if ($(".ui-sortable-handle").length === 0) {
+                            $("#save_reorder").hide();
+                        }
+                    }
+                    else {
+
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+        }
+        function RemovePartImage(id) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RemoveVehiclePartImage", "Vir")',
+                data: { imageId: id },
+                success: function (returndata) {
+
+                    if (returndata.Success) {
+
+                        alert("Part Image Removed");
+                        $("#div-part-image-" + id).parent().remove();
+                        var index = $("#partImages .image-item").length;
+                        var html = '<div class="image-item" id="div-"' + index + '></div>';
+                        $("#partImages").append(html);
+                        if ($("#partImages .image-item").find("img").length===0) {
+                         $(".div-" + $('#part_id').val()).data('img', "");
+                        }
+                    }
+
+                },
+                failure: function (returndata) {
+                }
+            });
+        }
+        $('body').on('click', '.img-focusable', function () {
+            $('.img-pop img').attr('src', $(this).attr('src'));
+            $('.img-pop-container').fadeIn(100);
+        });
+
+        $('.img-pop-container').on('click', function () {
+            $(this).fadeOut(100);
+        });
+
+
+    </script>
+    <script type="text/javascript">
+    var allFiles = [];
+    function readURL(input) {
+        if (input.files && input.files.length > 0) {
+            for (var i = 0; i < input.files.length; i++) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var imageId = $("ul.reorder-photos-list li").length;
+                    imageId = imageId + 1;
+                    var html = '<li id="image_li_' + imageId + '" class="ui-sortable-handle"><a href="javascript:void(0);" style="float: none;" class="image_link"><img src=' + e.target.result + ' alt=""></a></li>';
+                    $('#galleryContainerdiv').append(html);
+                    //$('#img1').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    }
+    function readURLDropZone(input, imageId) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            //var imageId = $("ul.reorder-photos-list li").length;
+            var html = '<li id="image_li_' + imageId + '" class="ui-sortable-handle"><a href="javascript:void(0);" style="float: none;" class="image_link"><img src=' + e.target.result + ' alt=""></a><a href="javascript:void(0)" class="remove" onclick="RemoveGalleryImage('+imageId+')"><i class="fa fa-close"></i></a> </li>';
+            $('#galleryContainerdiv').append(html);
+            //$('#img1').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input);
+    }
+    $("#MultipleFiles").change(function () {
+        readURL(this);
+    });
+
+    </script>
+    <script type="text/javascript">
+    Dropzone.options.myAwesomeDropzone = {
+        paramName: "file",
+        autoProcessQueue: true,
+        maxFilesize: 10,
+        url: '@Url.Content("~/Inventory/SaveUploadedFile?vehicleId=")' + getUrlParameter('id'),
+        previewsContainer: "#galleryContainerdiv",
+        uploadMultiple: true,
+        parallelUploads: 5,
+        createImageThumbnails: false,
+        maxFiles: 20,
+        init: function () {
+            var cd;
+            this.on("addedfile", function () {
+                console.log('drop');
+                $.blockUI({ message: '<div class="upload-loader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>' });
+            });
+
+            this.on("drop", function () {
+                console.log('drop');
+                $.blockUI({ message: '<div class="upload-loader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>' });
+            });
+
+            this.on("error", function () {
+                $.unblockUI();
+            });
+            this.on("success", function (file, response) {
+                if (response.ImageID != 0) {
+                    $("#save_reorder").show();
+
+                    readURLDropZone(file, response.ImageID);
+                    $('#gallerySuccess').html("New Image Added");
+                    $('#gallerySuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                }
+                this.removeFile(file);
+                $('.dz-progress').hide();
+                $('.dz-size').hide();
+                $('.dz-error-mark').hide();
+                allFiles.push(file);
+                cd = response;
+                $.unblockUI();
+            });
+        },
+        onComplete: function () {
+
+
+            $.unblockUI();
+        }
+    };
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#MakerID").change(function () {
+
+            var id = $(this).val();
+            $.ajax({
+                type: "Get",
+                url: '@Url.Action("LoadModel", "Vir")',
+                data: { MakerId: id },
+                success: function (returndata) {
+                    if (returndata.Success && returndata.data != null && returndata.data.length > 0) {
+                        var html = "";
+
+                        for (var i = 0; i < returndata.data.length; i++) {
+                            html += '<option value="' + returndata.data[i].Id + '">' + returndata.data[i].Name + '</option>';
+                        }
+                        $("#AutoModelID").append(html);
+                    }
+
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+
+        });
+        $('.reorderImages').on('click', function () {
+            $("ul.reorder-photos-list").sortable({ tolerance: 'pointer' });
+            $('.reorderImages').html('Save Reordering');
+            $('.reorderImages').attr("id", "save_reorder");
+            $('#reorder-helper').slideDown('slow');
+            $('.image_link').attr("href", "javascript:void(0);");
+            $('.image_link').css("cursor", "move");
+            $("#save_reorder").click(function (e) {
+                if (!$("#save_reorder i").length) {
+                    //$(this).html('').prepend('<img src= "~/assets/images/refresh-animated.gif"/>');
+                    //$("ul.reorder-photos-list").sortable('destroy');
+                    $("#reorder-helper").html("Reordering Photos - This could take a moment. Please don't navigate away from this page.").removeClass('light_box').addClass('notice notice_error');
+                    var h = [];
+                    $("ul.reorder-photos-list li").each(function () { h.push($(this).attr('id').substr(9)); });
+                    var listIds = '';
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Content("~/Inventory/UpdateFeaturedImages")",
+                        data: { ImageIDs: h },
+                        success: function (respose) {
+                            if (respose.OrderUpdated) {
+                                $('.reorderImages').html('Enable Reordering');
+                                $('#gallerySuccess').html("Images Order Updated");
+                                $('#gallerySuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                            }
+                            else {
+                                $('#galleryError').html("There is some issue.Try Later.");
+                                $('#galleryError').fadeIn('fast').delay(5000).fadeOut('fast');
+                            }
+                            //window.location.reload();
+                            //$('.reorder_link').html('reorder photos');
+                        }
+                    });
+                    return false;
+                }
+                e.preventDefault();
+            });
+        });
+        $('.svg-container').on('click', function () {
+            var obj = $(this)
+            var obj_id = $(this).attr('id');
+            var svg_html = $(this).clone();
+            $('.image-item').html('');
+            $('#part_id').val(obj.data("name"));
+            $('#hdnid').val(obj.data("test"));
+
+            $('#hdnPercentageId').val(obj.data("parent-container"));
+            $('#hiddenid').val(obj.data("name"));
+            $("#c_rate").html("");
+            $('#field-box-title').html(obj.data("partname"));
+            $('#field-box-container').fadeIn('200');
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadPargImages", "Vir")',
+                data: { vehicleId: getUrlParameter('id'), vehiclePartId: $("#part_id").val() },
+                success: function (returndata) {
+                    if (returndata.Success && returndata.data.images != null && returndata.data.images.length > 0) {
+                           for (var i = 0; i < returndata.data.images.length; i++) {
+                            $("#div-" + (i + 1)).html('<img class="img-responsive img-rounded  img-focusable" id="div-part-image-' + returndata.data.images[i].VehiclePartImageID + '" src="' + returndata.data.images[i].ImagePath + '"><a href="javascript:void(0)" class="remove" onclick=RemovePartImage(' + returndata.data.images[i].VehiclePartImageID + ')><i class="fa fa-close"></i></a>');
+
+                        }
+
+                    }
+                    if (returndata.Success && returndata.data.Conditions != null && returndata.data.Conditions.length > 0) {
+                        var html = "<option>Please Select</option>";
+                        for (var i = 0; i < returndata.data.Conditions.length; i++) {
+                            html += '<option value="' + returndata.data.Conditions[i].Name + '">' + returndata.data.Conditions[i].Name + '</option>';
+
+
+                        }
+
+                    }
+                    $("#c_rate").html(html);
+
+
+                    $('#cor').val(obj.data("cor"));
+                    $('#c_rep').val(obj.data("corp"));
+                    $('#erc').val(obj.data("esr"));
+                    $('#desc').val(obj.data("des"));
+
+                    if (obj.data("cr") !== "" && obj.data("cr") != null) {
+                        $('#c_rate').val(obj.data("cr"));
+                    }
+                    else {
+                        $("#c_rate option:first").attr('selected', 'selected');
+                    }
+                    if (obj.data("sv") !== "" && obj.data("sv") != null) {
+                        $('#severity').val(obj.data("sv"));
+                    }
+                    else {
+                        $("#severity option:first").attr('selected', 'selected');
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+
+
+            //set_form_content(obj_id);
+        });
+    });
+    function SaveVideo() {
+        var model = { VideoPath: $("#videoUrl").val(), VehicleID: getUrlParameter('id') }
+        if (!testURL(model.VideoPath)) {
+            $('#videoError').html("Please add valid embed url");
+            $('#videoError').fadeIn('fast').delay(5000).fadeOut('fast');
+            return;
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddUpdateVehicleVideo", "Vir")',
+                data: model,
+                success: function (returndata) {
+                    if (returndata.Success) {
+                        console.log(returndata);
+                        var html = '<li id="video-li-' + returndata.VideoId + '">' + $("#videoUrl").val() + '<span style="margin-left: 10px;"><a href="javascript:void(0);" onclick="RemoveVideo(' + returndata.VideoId + ')"><i style="color: #f37b2e;" class="fa fa-close"></i></a></span></li>';
+                        $("#videoUrl").val("");
+                        $('#videoSuccess').html("Video Link Saved")
+                        $('#videoSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+                        $("#videos").append(html);
+                    }
+                    else {
+                        $('#videoError').html(returndata.Message)
+                        $('#videoError').fadeIn('fast').delay(5000).fadeOut('fast');
+                    }
+
+                },
+                failure: function (returndata) {
+
+
+                }
+            });
+        }
+
+
+    }
+    function RemoveVideo(id){
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("RemoveVehicleVideo", "Vir")',
+            data: { videoId :id},
+            success: function (returndata) {
+                if (returndata.Success) {
+                    $("#video-li-" + id).remove();
+                    $('#videoSuccess').html("Video Link Removed")
+                    $('#videoSuccess').fadeIn('fast').delay(5000).fadeOut('fast');
+
+                }
+                else {
+                    $('#videoError').html(returndata.Message)
+                    $('#videoError').fadeIn('fast').delay(5000).fadeOut('fast');
+                }
+
+            },
+            failure: function (returndata) {
+                $('#videoError').html("There is some issue.Please try later.")
+                $('#videoError').fadeIn('fast').delay(5000).fadeOut('fast');
+
+            }
+        });
+
+    }
+    function testURL(url) {
+        return /www.youtube.com\/embed\/[A-z0-9]+/.test(url);
+    }
+
+    </script>
+
+}

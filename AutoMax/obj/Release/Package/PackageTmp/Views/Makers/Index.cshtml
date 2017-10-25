@@ -1,0 +1,172 @@
+﻿@model PagedList.IPagedList<AutoMax.Models.Entities.Maker>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Manage Make";
+    Layout = "~/Views/Shared/_LayoutGrid.cshtml";
+    int counter = 1;
+    if (Model.PageNumber == 1)
+    {
+        counter = 1;
+    }
+    else
+    {
+        counter = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+    }
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/css/theme.default.min.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-10">
+        <h3 class="main-header">@ViewBag.Title</h3>
+    </div>
+    <!-- <div class="col-md-2">
+        <a href="@Url.Content("~/Makers/Create")" style="color:#f37b2e"><i class="fa fa-plus-square fa-3x" style="cursor:pointer;" aria-hidden="true"></i></a>
+    </div> -->
+</div>
+<div class="clearfix">
+
+</div>
+<div class="panel panel-default main-panel">
+    <div class="panel-body">
+        <form action="@Url.Content("~/Makers/Index")" method="post">
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control custom-control" placeholder="Vehicle Type" id="Type" name="Type" value="@ViewBag.Type">
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control custom-control" placeholder="Make Name" id="Name" name="Name" value="@ViewBag.Name">
+                    </div>
+                </div>
+
+                <div class="col-md-offset-3 col-lg-offset-3 col-md-3 col-lg-3 clearfix">
+                    <a href="@Url.Content("~/Makers/Create")" class="btn btn-custom pull-right" style="margin-left: 10px;">Add</a>
+                    <button type="submit" class="btn btn-submit btn-custom pull-right" style="margin-left: 10px;">Search</button>
+                    <!-- <div class="input-group" style=" margin: 0 auto;">
+                        <input type="submit" value="Search" class="btn btn-block btn-submit btn-custom" />
+                    </div> -->
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+@Html.Partial("_Notifications")
+<div class="panel panel-default main-panel" style="margin-top:36px;">
+    <div class="panel-body">
+        <table id="tblsort" class="table tablesorter" style="border-spacing: 10px;border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Ser#</th>
+                    <th>Vehicle Type</th>
+                    <th>Make Name</th>
+                    <th>Arabic Make Name</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Created By</th>
+                    <th class="unsortable">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="Maker_@item.MakerID">
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            @if (item.VehicleType != null)
+                            {
+                                @item.VehicleType.Type
+                            }
+                            else
+                            {
+                                @:-
+                            }
+                        </td>
+                        <td>@item.Name</td>
+                        <td>@item.ArabicName</td>
+                        <td>@item.CreatedDate.ToString(AutoMax.Utility.Constants.DATE_FORMAT)</td>
+                        <td>@item.UpdatedDate.ToString(AutoMax.Utility.Constants.DATE_FORMAT)</td>
+                        <td>
+                            Admin
+                        </td>
+                        <td>
+                            <a href="@Url.Content("~/Makers/Edit/"+item.MakerID)" title="Edit" style="color:blue;font-size:10px;">
+                                <i class="fa fa-pencil fa-2x"></i>
+                            </a>
+                            <a href="#" onclick="remove(@item.MakerID)" title="Delete" style="color:red;font-size:10px;">
+                                <i class="fa fa-trash fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+            </tbody>
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter,Type=ViewBag.Type,Name=ViewBag.Name }))
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://use.fontawesome.com/5df3e9a121.js"></script>
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>-->
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="~/assets/plugins/datatables/datatables.min.js"></script>-->
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/jquery.tablesorter.widgets.min.js"></script>
+    <script>
+        $(function () {
+            $("#tblsort").tablesorter(
+                {
+                    textSorter: function (a, b) {
+                        return a.localeCompare(b);
+                    },
+                    headers: {
+                        '.unsortable': { sorter: false },
+                        1: { sorter: "text" },
+                        2: { sorter: "text" },
+                        5: { sorter: "text" }
+                    },
+                    ignoreCase: true
+                    //selectorHeaders: '> thead > tr > th  '
+                    // cssChildRow: 'expand-child'
+                });
+        });
+    </script>
+    <script type="text/javascript">
+        function remove(ID) {
+            if (ID) {
+                var confrDelete = window.confirm("Are you sure you want to delete?");
+                if (confrDelete) {
+                    $.ajax({
+                        url: '@Url.Content("~/Makers/DeleteMaker")',
+                        data: { id: ID },
+                        type: 'POST',
+                        success: function (data) {
+                            if (data.IsDeleted) {
+                                $('#notificationMessageID').addClass("alert alert-success");
+                                $('#notificationMessageID').html("<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a> " + data.Message);
+                            } else {
+                                $('#notificationMessageID').addClass("alert alert-danger");
+                                $('#notificationMessageID').html("<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a> " + data.Message);
+                                console.log(data.Message);
+                            }
+                            setTimeout(function () { window.location.href = '@Url.Action("Index", "Makers")'; }, 3000);
+                        },
+                        error: function (xHR, status, error) {
+                            $('#notificationMessageID').addClass("alert alert-danger");
+                            $('#notificationMessageID').html("<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a> " + data.Message);
+                            console.log(data.Message);
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+}

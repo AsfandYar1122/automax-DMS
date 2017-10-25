@@ -1,0 +1,210 @@
+﻿@model AutoMax.Models.VehicleWizard
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>VehicleWizard</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StockNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StockNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MMCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MMCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlateNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlateNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VIN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VIN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FreeText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FreeText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Odometer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Odometer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifieddDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifieddDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoBodyStyle.BodyStyle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoBodyStyle.BodyStyle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoCondition.Condition)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoCondition.Condition)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoDoor.Doors)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoDoor.Doors)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoEngine.EngineName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoEngine.EngineName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoExteriorColor.ExteriorColor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoExteriorColor.ExteriorColor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoInteriorColor.InteriorColor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoInteriorColor.InteriorColor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoModel.ModelName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoModel.ModelName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoSteering.Steering)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoSteering.Steering)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoTransmission.Transmission)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoTransmission.Transmission)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DriveType.DriveTypeV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DriveType.DriveTypeV)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FuelType.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FuelType.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InventoryStatu.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InventoryStatu.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Maker.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Maker.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MotorizedType.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MotorizedType.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VehicleTrim.TrimName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VehicleTrim.TrimName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Year.YearName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year.YearName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.VehicleID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,39 @@
+.left-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: $left_margin;
+  height: 100vh;
+  background-color: $left-nav-background-color;
+  box-shadow: 0px 0px 15px 1px #000000;
+
+  > .left-nav-header > .left-nav-brand {
+    display: block;
+    padding: 15px 0px 15px 0px;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+
+  > ul {
+    padding: 0px;
+
+    > li {
+      list-style: none;
+
+      > a {
+        display: block;
+        padding: 30px 0px 30px 0px;
+        color: $theme-secondary-color;
+
+        > i {
+          font-size: 2em;
+          color: inherit;
+        }
+      }
+
+      a.active {
+        color: $theme-quaternary-color;
+      }
+    }
+  }
+}

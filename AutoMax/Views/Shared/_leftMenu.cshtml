@@ -1,0 +1,22 @@
+﻿@using AutoMax.Common.Enums;
+@{
+    var userName = ComonMethods.GetUserName(User.Identity.Name);
+    var userRole = User.Identity.Name.GetUserRole();
+}
+
+<div class="left-nav-header">
+    <a title="AutoMax" class="left-nav-brand  tool-tip-right" href="@Url.Content("~/Dashboard/Index")"><img src="~/assets/images/Logo%20Autotmax%20Icon.svg"></a>
+</div>
+<ul>
+    <li><a class="text-center tool-tip-right" title="Dashboard" href="@Url.Content("~/Dashboard/Index/")"><img class="left-img" src="~/assets/images/SVG/dashboard.svg"></a></li>
+    <li><a class="text-center " title="Inventory List" href="@Url.Content("~/Inventory/Index/")"><img class="left-img" src="~/assets/images/SVG/car.svg"></a></li>
+    @if (userRole == UserRolesConst.ADMIN|| userRole == UserRolesConst.SUPER_ADMIN || userRole == UserRolesConst.Marketing)
+    {
+        <li><a class="text-center active" title="Upload Wizard" href="@Url.Content("~/Inventory/Wizard/")"><img class="left-img" src="~/assets/images/SVG/caradd.svg"></a></li>
+    }
+    @if (userRole == UserRolesConst.ADMIN || userRole == UserRolesConst.SUPER_ADMIN || userRole == UserRolesConst.Marketing || userRole == UserRolesConst.DataOP)
+    {
+        <li><a class="text-center tool-tip-right" href="#" data-toggle="modal" data-target="#setting-modal" title="Settings"><img class="left-img" src="~/assets/images/SVG/settings.svg"></a></li>
+    }
+</ul>
+

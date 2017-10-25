@@ -1,0 +1,76 @@
+.field-box-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+  overflow: auto;
+  z-index: 9999;
+
+  .svg-box, .field-box, .upload-box {
+    border: 2px solid #9d9d9d;
+    border-radius: 4px;
+  }
+
+  .image-box, .upload-box {
+    margin-top: 10px;
+    height: calc(80vh + 10px);
+  }
+
+  .svg-box {
+    margin-top: 10px;
+    height: 20vh;
+  }
+
+  .field-box {
+    margin-top: 10px;
+    padding: 10px 20px;
+    height: 60vh;
+    overflow: auto;
+  }
+
+  .image-box {
+    @include clearfix;
+
+    .image-item {
+      margin-top: 1px;
+      width: 50%;
+      height: 16vh;
+      border: 2px solid #9d9d9d;
+      border-radius: 4px;
+      float:left
+    }
+  }
+}
+
+.tab-content {
+  .svg-content {
+    .svg-tab {
+      display: none;
+    }
+    .svg-tab.active {
+      display: block;
+    }
+  }
+}
+
+.part-detail {
+  .part-img, .part-title, .part-item {
+    background-color: $theme-additional-color-01;
+    padding: 5px 5px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    .title {
+      font-weight: bold;
+    }
+    .value {
+      text-align: right;
+    }
+  }
+
+  .part-img {
+    height: 150px;
+  }
+}
