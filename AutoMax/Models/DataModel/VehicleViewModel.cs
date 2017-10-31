@@ -64,5 +64,7 @@ namespace AutoMax.Models.DataModel
 
         public string VehicleOptions { get; set; }
         public string Options { get; set; }
+
+        public string QRCode { get; set; }
     }
 }

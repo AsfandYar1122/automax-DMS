@@ -1,0 +1,117 @@
+﻿@model IEnumerable<AutoMax.Models.DataModel.VehicleViewModel>
+@{
+    Layout = null;
+    var url = "http://dms.automax.online/";
+    var webSite = ViewBag.Url;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print Selected Vehicles</title>
+    <script type="text/javascript" src="~/assets/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="~/assets/scripts/qrcode.js"></script>
+</head>
+<body>
+    @foreach (var @vehicle in Model)
+    {
+        <div style="width: 8.3in; height: 11.895in; margin: 0 auto; text-align: center; border: 10px solid grey; padding: 60px 15px 0 15px;">
+            <img style="height: auto" src="~/assets/images/LogoAutotmax.png">
+            <div style="font-size: 22px; font-weight: bold; margin-top: 5px;">CALL NOW: 920006917</div>
+            @if (@vehicle.VehiclePrice != null)
+            {
+                <div style="background-color: #f37b2e; padding: 20px 15px; font-size: 32px; color: #fff; margin-top: 5px; border-radius: 15px;">@Html.Raw("Price: " + String.Format("{0:N0}", @vehicle.VehiclePrice.Value))</div>
+            }
+            <div style="background-color: #f37b2e; padding: 20px 15px; font-size: 32px; color: #fff; margin-top: 5px; border-radius: 15px;">@Html.Raw(@vehicle.Maker + " " + @vehicle.AutoModelName + " " + @vehicle.SubModelName)</div>
+            <div style="margin-top: 10px; border: 3px solid rgba(128, 128, 128, 0.51); padding: 15px 10px; border-radius: 15px;">
+                <div style="float:left; width: 50%;">
+                    <ul style="margin: 0; padding: 0; list-style: none;">
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>VIN #:</b> @vehicle.VIN </li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Stock #:</b> @(!string.IsNullOrEmpty(@vehicle.StockNumber) ? @vehicle.StockNumber : "N/A") </li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Odometer:</b> @(!string.IsNullOrEmpty(@vehicle.Odometer) ? @vehicle.Odometer : "N/A") KM </li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Engine:</b> @(!string.IsNullOrEmpty(@vehicle.EngineName) ? @vehicle.EngineName : "N/A") @(!string.IsNullOrEmpty(@vehicle.EngineCapacity) ? @vehicle.EngineCapacity : " ")</li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Transmission:</b> @(!string.IsNullOrEmpty(@vehicle.AutoTransmission) ? @vehicle.AutoTransmission : "N/A")</li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Door:</b> @(!string.IsNullOrEmpty(@vehicle.AutoDoor) ? @vehicle.AutoDoor : "N/A")</li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Airbag:</b> @(@vehicle.AutoAirBag != null ? @vehicle.AutoAirBag.Value.ToString() : "N/A")</li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Condition:</b> @(!string.IsNullOrEmpty(@vehicle.AutoUsedStatus) ? @vehicle.AutoUsedStatus : "N/A")</li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Drive Type:</b> @(!string.IsNullOrEmpty(@vehicle.DriveType) ? @vehicle.DriveType : "N/A")</li>
+                        <li style="padding: 3px 10px; font-size: 18px; margin-top: 2px; text-align: left; font-weight: 500;"><b>Upholstery:</b> @(!string.IsNullOrEmpty(@vehicle.UpholsteryName) ? @vehicle.UpholsteryName : "N/A")</li>
+                    </ul>
+                </div>
+                <div style="float:left; width: 50%;">
+
+                    <img style="width: 60%; height: auto;" src="@vehicle.QRCode">
+                    <div style="font-size: 24px; font-weight: 500;">Scan QR Code</div>
+                </div>
+                <span style="content:' ';display: table; clear: both;"></span>
+            </div>
+
+            @if (!string.IsNullOrEmpty(@vehicle.Options))
+            {
+                <div style="background-color: #f37b2e; padding: 20px 15px; font-size: large;max-height: 180px; overflow: auto; color: #fff; margin-top: 5px; border-radius: 15px;">
+                    <div style="font-size: larger;font-weight: bold;"><u>Specifications</u></div>
+                    @Html.Raw(@vehicle.Options)
+                </div>
+            }
+
+            <div style="background-color: rgba(128, 128, 128, 0.51); margin-top: 10px; border-radius: 15px; padding: 10px;">
+                <div style="float:left; width: 40%; text-align: left;">
+                    <img src="~/assets/images/auto_eva.png">
+                </div>
+                <div style="float:left; width: 60%; font-size: 30px; margin-top: 5px; color: #373737;"> @(!string.IsNullOrEmpty(@vehicle.TotalRatting.ToString()) ? "Taqeem Rating: " + string.Format("{0:0.#}", Math.Truncate(@vehicle.TotalRatting.Value * 10) / 10) : "Taqeem Rating: 4.0")</div>
+
+                @if (@vehicle.TotalRatting != null && @vehicle.TotalRatting != 0 && @vehicle.TotalRatting < 1.5)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Very poor</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 1.5 && @vehicle.TotalRatting < 2)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Poor</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 2 && @vehicle.TotalRatting < 2.5)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Below Average</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 2.5 && @vehicle.TotalRatting < 3)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Above Average</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 3 && @vehicle.TotalRatting < 3.5)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Fair</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 3.5 && @vehicle.TotalRatting < 4)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Very Fair</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 4 && @vehicle.TotalRatting < 4.5)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Good</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 4.5 && @vehicle.TotalRatting < 5)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Very Good</div>
+                }
+                else if (@vehicle.TotalRatting != null && @vehicle.TotalRatting >= 5)
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Excellent</div>
+                }
+                else
+                {
+                    <div style="float:left; width: 60%; font-size: 30px; margin-top: 10px; color: #373737;">Good</div>
+                }
+
+
+                <span style="content:' '; display: table; clear: both;"></span>
+            </div>
+
+            <div style="background-color: grey; padding: 10px; margin-top: 10px; color: #fff; font-size: 56px; border-radius: 15px;">Year: @vehicle.YearName</div>
+            <div style="background-color: #f37b2e; padding: 20px; margin-top: 10px; color: #fff; border-radius: 15px;">
+                <div style="font-size: 14px; margin-bottom: 5px;">FOR ADDITIONAL DETAIL PLEASE VISIT</div>
+                <div>WWW.AUTOMAX.ONLINE</div>
+            </div>
+        </div>
+        <br />
+    }
+</body>
+</html>

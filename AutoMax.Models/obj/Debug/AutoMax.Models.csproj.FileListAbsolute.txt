@@ -16,3 +16,13 @@ E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Debug\Microsoft.SqlServer.Dmf.dll
 E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
 E:\Code\AutoMaxTFS\Automax\AutoMax.Models\bin\Debug\Microsoft.SqlServer.RegSvrEnum.dll
 E:\Code\AutoMaxTFS\Automax\AutoMax.Models\obj\Debug\AutoMax.Models.csprojResolveAssemblyReference.cache
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\bin\Debug\AutoMax.Models.dll.config
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\bin\Debug\AutoMax.Models.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\bin\Debug\AutoMax.Models.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\bin\Debug\EntityFramework.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\bin\Debug\EntityFramework.SqlServer.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\bin\Debug\log4net.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\bin\Debug\PagedList.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\obj\Debug\AutoMax.Models.csprojResolveAssemblyReference.cache
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\obj\Debug\AutoMax.Models.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Models\obj\Debug\AutoMax.Models.pdb

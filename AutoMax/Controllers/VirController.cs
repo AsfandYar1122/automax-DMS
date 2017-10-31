@@ -903,6 +903,53 @@ namespace AutoMax.Controllers
                 return (Json(new { Success = false, Message = "" }, JsonRequestBehavior.AllowGet));
             }
         }
+
+
+
+        public ActionResult PrintSelectedVehicles(string VehicleIDs)
+        {
+            List<VehicleViewModel> selectedVechlesInfo = new List<VehicleViewModel>();
+            List<string> VehicleList = new List<string>();
+            if (VehicleIDs.Contains(","))
+            {
+                VehicleList = VehicleIDs.Split(',').ToList<string>();
+            }
+            else
+            {
+                VehicleList.Add(VehicleIDs);
+            }
+
+
+            foreach (var vechleId in VehicleList)
+            {
+                InventoryRespository rep = new InventoryRespository();
+
+                var veh = rep.GetInventoryViewModelDetail(Convert.ToInt64(vechleId)).Data as VehicleViewModel;
+                ViewBag.Url = WebConfigurationManager.AppSettings["websiteUrl"];
+
+                string code = ViewBag.Url + vechleId;
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                var qrCodeData = qrGenerator.CreateQrCode(code, QRCodeGenerator.ECCLevel.Q);
+                System.Web.UI.WebControls.Image imgBarCode = new System.Web.UI.WebControls.Image();
+                imgBarCode.Height = 150;
+                imgBarCode.Width = 150;
+                QRCode qrCode = new QRCode(qrCodeData);
+
+                using (Bitmap bitMap = qrCode.GetGraphic(20))
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        bitMap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        byte[] byteImage = ms.ToArray();
+                        imgBarCode.ImageUrl = "data:image/png;base64," + Convert.ToBase64String(byteImage);
+                    }
+                    veh.QRCode = imgBarCode.ImageUrl;
+                }
+                selectedVechlesInfo.Add(veh);
+            }
+            return View(selectedVechlesInfo);
+            //  return View();
+        }
     }
 
 }

@@ -202,7 +202,7 @@ else if (Request["facebook"] == "failure")
     <input type="button" value="Delete All" onclick="deleteAll();" style="width:140px;" class="btn btn-submit btn-custom pull-right" />
     <a href="" style="margin-right: 13px;" onclick="GetImageURLFromFTP();" class="btn btn-submit btn-custom pull-right">Import from Dealer Made</a>
     <input type="button" style="margin-right: 13px;width:140px" value="Reset Filter" onclick="location.href='@Url.Action("Index", "Inventory")'" class="btn btn-submit btn-custom pull-right" />
-
+    <input type="button" style="margin-right: 13px;width:180px" value="Print Stickers" id="printSelectedVehicleBtn" class="btn btn-submit btn-custom pull-right" />
     <a href="" style="color: #ff4500;margin-left:6%;padding: 10px 0;text-decoration: underline;">Vehicle's Count: @ViewBag.CountTotal</a>
     @*<a style="float:right;margin-right:27px">Vehicle Count:<span class="badge" style="margin-left:15px">@ViewBag.CountTotal</span></a>*@<br>
 
@@ -745,6 +745,10 @@ else if (Request["facebook"] == "failure")
                 </div>
             </div>
         </form>
+         @*for Print selected vehicles*@
+        <form hidden target="_blank" action="/Vir/PrintSelectedVehicles" id="slectedVehicaleForm">
+            <input type="hidden" value="" id="selectedVehicleValues" name="VehicleIDs" />
+        </form>
     </div>
 </div>
 
@@ -988,6 +992,24 @@ else if (Request["facebook"] == "failure")
     <script type="text/javascript" src="~/assets/plugins/blockUI.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+
+            // This for print vehicles
+            $("#printSelectedVehicleBtn").on("click", function (evt) {
+                if ($(".clsDeleteAll:checked").length > 0) {
+                    var vehicleArr = [];
+                    $(".clsDeleteAll:checked").each(function () { vehicleArr.push($(this).data('vehicleid')); });
+                    if (vehicleArr.length > 0) {
+                        $("#selectedVehicleValues").val(vehicleArr);
+                        $("#slectedVehicaleForm").submit();
+                    }
+                    else {
+                        alert("Some error occured while requesting. Please try agian.");
+                    }
+                }
+                else {
+                    alert("Please select a vehicle to print. ");
+                }
+            });
             //$(".sortable").each(function(){ $(this).attr("title","Click to Sort"); });
             $("#VIN").autocomplete({
                 source: function (request, response) {

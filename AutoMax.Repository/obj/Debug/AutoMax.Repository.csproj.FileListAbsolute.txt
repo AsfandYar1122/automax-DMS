@@ -10,3 +10,16 @@ E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\bin\Debug\EntityFramework.SqlServe
 E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\obj\Debug\AutoMax.Repository.csprojResolveAssemblyReference.cache
 E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\obj\Debug\AutoMax.Repository.dll
 E:\Code\AutoMaxTFS\Automax\AutoMax.Repository\obj\Debug\AutoMax.Repository.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\AutoMax.Repository.dll.config
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\AutoMax.Repository.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\AutoMax.Repository.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\AutoMax.Models.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\EntityFramework.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\EntityFramework.SqlServer.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\AutoMax.Models.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\EntityFramework.xml
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\EntityFramework.SqlServer.xml
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\obj\Debug\AutoMax.Repository.csprojResolveAssemblyReference.cache
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\obj\Debug\AutoMax.Repository.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\obj\Debug\AutoMax.Repository.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Repository\bin\Debug\AutoMax.Models.dll.config

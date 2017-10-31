@@ -7,3 +7,13 @@ E:\Code\AutoMaxTFS\Automax\AutoMax.Common\bin\Debug\AutoMax.Models.pdb
 E:\Code\AutoMaxTFS\Automax\AutoMax.Common\obj\Debug\AutoMax.Common.csprojResolveAssemblyReference.cache
 E:\Code\AutoMaxTFS\Automax\AutoMax.Common\obj\Debug\AutoMax.Common.dll
 E:\Code\AutoMaxTFS\Automax\AutoMax.Common\obj\Debug\AutoMax.Common.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\bin\Debug\AutoMax.Common.dll.config
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\bin\Debug\AutoMax.Common.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\bin\Debug\AutoMax.Common.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\bin\Debug\AutoMax.Models.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\bin\Debug\EntityFramework.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\bin\Debug\AutoMax.Models.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\obj\Debug\AutoMax.Common.csprojResolveAssemblyReference.cache
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\obj\Debug\AutoMax.Common.dll
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\obj\Debug\AutoMax.Common.pdb
+D:\GitHubLocalRep\automax-DMS\AutoMax.Common\bin\Debug\AutoMax.Models.dll.config
